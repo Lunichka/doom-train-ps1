@@ -1,0 +1,1094 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Шрифт: DotGothic16 (SIL OFL) — растровый «dot gothic», как в меню JRPG на PS1.
+   Кириллица и латиница лежат в разных файлах, поэтому разводим по unicode-range.
+   В оригинале кириллица полноширинная (как японские знаки), из-за чего текст
+   «рассыпается». Файл *-cyrillic-tight — та же графика букв, но с пропорциональными
+   ширинами в целых пикселях (см. assets/fonts/README.txt).
+   ========================================================================== */
+@font-face {
+  font-family: 'DotGothic16';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('./assets/fonts/dotgothic16-latin-400-normal.woff2') format('woff2');
+  unicode-range: U+0000-03FF, U+1E00-1EFF, U+2000-20CF, U+2100-2115, U+2117-218F, U+2200-22FF;
+}
+
+@font-face {
+  font-family: 'DotGothic16';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('./assets/fonts/dotgothic16-cyrillic-tight.woff2') format('woff2');
+  unicode-range: U+0400-052F, U+2116;
+}
+
+/* ==========================================================================
+   Палитра и базовые настройки
+   ========================================================================== */
+:root {
+  --font: 'DotGothic16', ui-monospace, monospace;
+
+  --page: #06070d;
+  --text: #f1f1f7;
+  --dim: #9ba1c8;
+  --gold: #ecc95c;
+  --red: #ff7f6b;
+  --green: #92e47f;
+
+  /* окно: диагональный синий градиент, как в меню FF7/FF8 */
+  --win-a: #3f4d88;
+  --win-b: #242e5f;
+  --win-c: #11173a;
+  --bevel-hi: #dedff2;
+  --bevel-lo: #565a86;
+  --well: #0b0e25;
+
+  color-scheme: dark;
+  background: var(--page);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scrollbar-color: var(--bevel-lo) var(--page);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--page);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  word-spacing: 3px;
+  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  cursor: url('./assets/cursor-arrow.svg') 0 0, default;
+}
+
+button {
+  font-family: inherit;
+  cursor: url('./assets/cursor-hand.svg') 0 0, pointer;
+}
+
+button[aria-disabled='true'] {
+  cursor: url('./assets/cursor-arrow.svg') 0 0, default;
+}
+
+::selection {
+  background: var(--gold);
+  color: #000;
+}
+
+img {
+  image-rendering: pixelated;
+}
+
+h1,
+h2,
+h3,
+p,
+dl,
+dd {
+  margin: 0;
+  font-weight: 400;
+}
+
+.dim {
+  color: var(--dim);
+}
+
+.gold {
+  color: var(--gold);
+}
+
+.pos {
+  color: var(--green);
+}
+
+.neg {
+  color: var(--red);
+}
+
+.px-icon {
+  display: inline-block;
+  flex: none;
+  image-rendering: pixelated;
+}
+
+/* ==========================================================================
+   Каркас страницы
+   ========================================================================== */
+.ps1 {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 8px 24px;
+  background: var(--page);
+}
+
+.titlebar,
+.ps1-main,
+.ps1-foot {
+  width: 100%;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ps1-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ps1-foot {
+  color: #7a80a6;
+  font-size: 16px;
+  text-align: center;
+}
+
+/* ==========================================================================
+   Окно PS1: скошенная рамка (светлый верх-лево, тёмный низ-право),
+   чёрная обводка и диагональный градиент с пиксельным дизерингом.
+   ========================================================================== */
+.win {
+  position: relative;
+  padding: 12px 16px;
+  border: 2px solid;
+  border-color: var(--bevel-hi) var(--bevel-lo) var(--bevel-lo) var(--bevel-hi);
+  background:
+    conic-gradient(rgba(0, 0, 0, 0.16) 25%, transparent 0 50%, rgba(0, 0, 0, 0.16) 0 75%, transparent 0) 0 0 / 2px 2px,
+    linear-gradient(155deg, var(--win-a) 0%, var(--win-b) 48%, var(--win-c) 100%);
+  box-shadow:
+    0 0 0 2px #000,
+    inset 0 0 0 1px #080a1e;
+  text-shadow: 1px 1px 0 #000;
+}
+
+.win--thin {
+  padding: 4px;
+}
+
+.win-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: var(--gold);
+}
+
+.win-title--big {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 24px;
+  line-height: 32px;
+  text-align: center;
+}
+
+/* ==========================================================================
+   Верхняя панель
+   ========================================================================== */
+.titlebar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 8px 12px;
+}
+
+.titlebar-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--gold);
+}
+
+.titlebar-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.chip {
+  padding: 2px 10px;
+  background: var(--well);
+  border: 2px solid;
+  border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo);
+}
+
+/* ==========================================================================
+   Кнопки
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px 16px;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 24px;
+  text-shadow: 1px 1px 0 #000;
+  background: linear-gradient(180deg, #4d5d9e 0%, #2d386f 100%);
+  border: 2px solid;
+  border-color: var(--bevel-hi) var(--bevel-lo) var(--bevel-lo) var(--bevel-hi);
+  box-shadow: 0 0 0 2px #000;
+}
+
+.btn:hover {
+  background: linear-gradient(180deg, #6577bc 0%, #3b4888 100%);
+}
+
+.btn:active {
+  border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo);
+  padding-top: 10px;
+  padding-bottom: 6px;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+
+.btn--small {
+  padding: 2px 10px;
+}
+
+.btn--small:active {
+  padding-top: 4px;
+  padding-bottom: 0;
+}
+
+.btn--small.is-on {
+  background: linear-gradient(180deg, #4f9a62 0%, #25603a 100%);
+}
+
+.btn--wide {
+  width: 100%;
+  padding: 12px 16px;
+  text-align: center;
+}
+
+.btn--start {
+  padding: 12px 24px;
+  font-size: 16px;
+  text-align: left;
+}
+
+.blink {
+  animation: blink 1.2s steps(1, end) infinite;
+}
+
+.btn:hover .blink,
+.btn:focus-visible .blink {
+  animation: none;
+}
+
+@keyframes blink {
+  0%,
+  59% {
+    opacity: 1;
+  }
+  60%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   Меню с курсором-стрелкой
+   ========================================================================== */
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px 8px 4px;
+  color: inherit;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: left;
+  text-shadow: 1px 1px 0 #000;
+  background: transparent;
+  border: 0;
+}
+
+.menu-item:focus-visible {
+  outline: none;
+}
+
+.menu-cursor {
+  flex: 0 0 14px;
+  display: flex;
+  align-items: center;
+  min-height: 26px;
+}
+
+.menu-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.menu-key {
+  margin-right: 10px;
+  color: var(--gold);
+}
+
+.menu-sub {
+  color: #cfd2ea;
+}
+
+.menu-fx {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 20px;
+  color: var(--dim);
+}
+
+.menu-fx b {
+  font-weight: 400;
+}
+
+.menu-item.is-active,
+.menu-item--hover:hover,
+.menu-item--hover:focus-visible {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.03));
+}
+
+/* у предметов курсор появляется только при наведении/фокусе */
+.menu-item--hover .cursor {
+  visibility: hidden;
+}
+
+.menu-item--hover:hover .cursor,
+.menu-item--hover:focus-visible .cursor {
+  visibility: visible;
+}
+
+.menu-item.is-empty {
+  color: #6c7198;
+}
+
+.menu-item.is-empty .item-icon {
+  filter: grayscale(1) brightness(0.55);
+}
+
+.item-count {
+  margin-left: auto;
+  padding-left: 8px;
+  color: var(--gold);
+}
+
+.is-empty .item-count {
+  color: #6c7198;
+}
+
+.help {
+  min-height: 48px;
+  margin-top: 8px;
+  padding: 4px 8px;
+  color: #d4d7ee;
+  background: var(--well);
+  border: 2px solid;
+  border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo);
+}
+
+.tag {
+  display: inline-block;
+  margin-left: 12px;
+  padding: 0 8px;
+  border: 2px solid currentColor;
+  background: var(--well);
+}
+
+.tag--easy {
+  color: var(--green);
+}
+
+.tag--mid {
+  color: var(--gold);
+}
+
+.tag--hard {
+  color: var(--red);
+}
+
+/* ==========================================================================
+   Шкалы (в духе боевого HUD со сплэша: золотая рамка, ячейки)
+   ========================================================================== */
+.gauge {
+  position: relative;
+  height: 24px;
+  background: #2a0e16;
+  border: 2px solid #bf9b3c;
+  box-shadow:
+    0 0 0 2px #000,
+    inset 0 0 0 1px #000;
+}
+
+.gauge-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.gauge--mental .gauge-fill {
+  background: linear-gradient(180deg, #a7b8ff 0 18%, #4d68e2 18% 62%, #2b3b9e 62% 100%);
+}
+
+.gauge--rage .gauge-fill {
+  background: linear-gradient(180deg, #ffc07a 0 18%, #e5582a 18% 62%, #9b2610 62% 100%);
+}
+
+.gauge-cells {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, transparent 0 6px, rgba(0, 0, 0, 0.55) 6px 8px);
+}
+
+/* компактные шкалы параметров соседа */
+.gauge--red,
+.gauge--amber,
+.gauge--green {
+  height: 16px;
+  background: #12142c;
+  border-color: #6e7298;
+}
+
+.gauge--red .gauge-fill {
+  background: linear-gradient(180deg, #ff9a86 0 25%, #d9452f 25% 100%);
+}
+
+.gauge--amber .gauge-fill {
+  background: linear-gradient(180deg, #f6d977 0 25%, #d19a22 25% 100%);
+}
+
+.gauge--green .gauge-fill {
+  background: linear-gradient(180deg, #b4f0a2 0 25%, #4fa63c 25% 100%);
+}
+
+.gauge--red .gauge-cells,
+.gauge--amber .gauge-cells,
+.gauge--green .gauge-cells {
+  background: repeating-linear-gradient(90deg, transparent 0 4px, rgba(0, 0, 0, 0.55) 4px 6px);
+}
+
+.hud {
+  display: grid;
+  gap: 16px;
+}
+
+.hud-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.hud-label--mental {
+  color: #a9b9ff;
+}
+
+.hud-label--rage {
+  color: #ffa56e;
+}
+
+.hud-val.is-warn {
+  color: var(--red);
+  animation: blink 1s steps(1, end) infinite;
+}
+
+.stats {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.stat {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  row-gap: 4px;
+}
+
+.stat .gauge {
+  grid-column: 1 / -1;
+}
+
+/* ==========================================================================
+   Экран игры
+   ========================================================================== */
+.game {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: 16px;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (max-width: 899px) {
+  .game-grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* на узких экранах: шкалы → действия → рюкзак → описание */
+  .col {
+    display: contents;
+  }
+
+  .hud-slot {
+    order: 1;
+  }
+
+  .commands-slot {
+    order: 2;
+  }
+
+  .bag-slot {
+    order: 3;
+  }
+
+  .dossier-slot {
+    order: 4;
+  }
+}
+
+.dialog {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.portrait {
+  flex: 0 0 88px;
+  width: 88px;
+  height: 88px;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 30%, #2a3260, var(--well) 80%);
+  border: 2px solid;
+  border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo);
+}
+
+.portrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 6%;
+  image-rendering: pixelated;
+}
+
+.dialog-body {
+  min-width: 0;
+}
+
+.dialog-name {
+  color: var(--gold);
+}
+
+.dialog-title {
+  color: #ff9d88;
+}
+
+.dialog-text {
+  margin-top: 8px;
+}
+
+.dossier-desc {
+  color: #d4d7ee;
+}
+
+.log {
+  height: 136px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--bevel-lo) var(--well);
+}
+
+.log p + p {
+  margin-top: 2px;
+}
+
+.log-new {
+  color: var(--gold);
+}
+
+.log-old {
+  color: #8f94bb;
+}
+
+.log-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 720px) {
+  .log-row {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .log {
+    flex: 2;
+  }
+
+  .log-row .btn--wide {
+    flex: 1;
+    width: auto;
+  }
+}
+
+/* ==========================================================================
+   Достижения
+   ========================================================================== */
+.trophy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 8px;
+}
+
+.trophy {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  color: #8a8fb4;
+  background: rgba(5, 7, 24, 0.55);
+  border: 2px solid #0b0e25;
+}
+
+.trophy-icon {
+  filter: grayscale(1) brightness(0.5);
+}
+
+.trophy.is-on {
+  color: var(--text);
+  border-color: #bf9b3c;
+  background: rgba(5, 7, 24, 0.35);
+}
+
+.trophy.is-on .trophy-icon {
+  filter: none;
+}
+
+.trophy.is-on .trophy-name {
+  color: var(--gold);
+}
+
+.trophy-desc {
+  color: #9ea3c6;
+}
+
+.trophy.is-on .trophy-desc {
+  color: #c5c9e4;
+}
+
+/* ==========================================================================
+   Выбор маршрута / итоговые экраны
+   ========================================================================== */
+.screen-head {
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.screen-foot {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  text-align: center;
+}
+
+.result--bad {
+  --win-a: #6d3144;
+  --win-b: #411a2c;
+  --win-c: #210b18;
+}
+
+.result--good {
+  --win-a: #3f6c5a;
+  --win-b: #264539;
+  --win-c: #11241e;
+}
+
+.result-title {
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.result--bad .result-title {
+  color: var(--red);
+}
+
+.result--good .result-title {
+  color: var(--gold);
+}
+
+.result-text {
+  max-width: 560px;
+  color: #dcdff2;
+}
+
+.result-stats {
+  width: 100%;
+  max-width: 420px;
+  padding: 8px 12px;
+  text-align: left;
+  background: var(--well);
+  border: 2px solid;
+  border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo);
+}
+
+.result-stats div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* ==========================================================================
+   Сцена вагона. Позиционирование спрайтов и параллакс — без изменений.
+   ========================================================================== */
+.stage {
+  width: 100%;
+}
+
+.train-scene {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2188 / 768;
+  overflow: hidden;
+  isolation: isolate;
+  border: 2px solid #05060c;
+  background: #111512;
+}
+
+.scene-landscape {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  display: flex;
+  width: 200%;
+  height: 100%;
+  animation: countryside-scroll 36s linear infinite;
+  will-change: transform;
+}
+
+.scene-landscape img {
+  display: block;
+  flex: 0 0 50%;
+  width: 50%;
+  height: 100%;
+  object-fit: fill;
+  image-rendering: pixelated;
+}
+
+.scene-train {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.scene-player,
+.scene-neighbor {
+  position: absolute;
+  z-index: 2;
+  bottom: 3.5%;
+  height: 62%;
+  width: auto;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(2px 2px 0 #1b1b18);
+}
+
+.scene-player {
+  left: 28%;
+}
+
+.scene-neighbor {
+  right: 30%;
+  height: 57%;
+  max-width: 32%;
+}
+
+/* Valera is the only standing passenger, so he needs a taller placement. */
+.scene-neighbor--scanword_vendor {
+  right: 40%;
+  bottom: 1%;
+  height: 79%;
+  max-width: 34%;
+}
+
+/* Олег — сидит с гитарой */
+.scene-neighbor--bard_guitarist {
+  right: 20%;
+  bottom: 1%;
+  height: 70%;
+  max-width: 38%;
+}
+
+/* Артём — сидит с ноутбуком */
+.scene-neighbor--tech_bro {
+  right: 20%;
+  bottom: 2%;
+  height: 70%;
+  max-width: 34%;
+}
+
+.scene-neighbor--crying_baby {
+  right: 30%;
+  bottom: 1%;
+  height: 60%;
+  max-width: 30%;
+}
+
+/* Метка времени как экранная надпись старой видеокамеры */
+.scene-stamp {
+  position: absolute;
+  z-index: 4;
+  left: 8px;
+  bottom: 8px;
+  padding: 0 8px;
+  color: #ecebf2;
+  background: rgba(5, 6, 16, 0.75);
+  text-shadow: 1px 1px 0 #000;
+}
+
+/* Тревожная рамка сцены: ступенчатое мигание вместо плавной пульсации */
+.scene-alert {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 4px rgba(210, 50, 36, 0.7),
+    inset 0 0 48px rgba(170, 20, 20, 0.5);
+  animation: blink 1s steps(1, end) infinite;
+}
+
+@media (max-width: 639px) {
+  .scene-stamp {
+    display: none;
+  }
+}
+
+@keyframes countryside-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ==========================================================================
+   Заставка (картинка и композиция сохранены)
+   ========================================================================== */
+.intro-screen {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.intro-art-wrap {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 1408 / 768;
+  min-height: 320px;
+  background: #100e1a;
+  border: 2px solid;
+  border-color: var(--bevel-hi) var(--bevel-lo) var(--bevel-lo) var(--bevel-hi);
+  box-shadow: 0 0 0 2px #000;
+}
+
+.intro-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.intro-art-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 44%, rgb(8 8 17 / 28%) 58%, rgb(8 8 17 / 92%) 100%);
+}
+
+.intro-caption {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 16px 24px;
+  text-align: center;
+}
+
+.intro-eyebrow {
+  color: var(--gold);
+  text-shadow:
+    1px 1px 0 #000,
+    -1px 1px 0 #000,
+    1px -1px 0 #000,
+    -1px -1px 0 #000;
+}
+
+.intro-caption h1 {
+  color: #fff0c9;
+  font-size: 24px;
+  line-height: 32px;
+  text-shadow:
+    3px 3px 0 #2a1408,
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000,
+    0 3px 0 #000,
+    3px 0 0 #000;
+}
+
+.intro-caption p {
+  color: #d9d2c0;
+  text-shadow: 1px 1px 0 #000;
+}
+
+.intro-caption .btn--start {
+  margin-top: 8px;
+}
+
+.intro-footnote {
+  color: #858cb0;
+  text-align: center;
+}
+
+@media (min-width: 900px) {
+  .intro-caption h1 {
+    font-size: 32px;
+    line-height: 40px;
+  }
+}
+
+@media (max-width: 640px) {
+  .intro-art-wrap {
+    min-height: 420px;
+    aspect-ratio: auto;
+  }
+
+  .intro-art {
+    position: absolute;
+    inset: 0;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .intro-caption {
+    padding: 16px 10px;
+  }
+
+  .intro-caption h1 {
+    max-width: 340px;
+  }
+}
+
+/* ==========================================================================
+   Цветокоррекция: «ЭЛТ-телевизор». Сканлайны, зерно, виньетка, тёплый тон.
+   Поверх всего, кликов не перехватывает.
+   ========================================================================== */
+.crt {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.11) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at 50% 45%, transparent 58%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+.crt::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(92, 66, 120, 0.1);
+  mix-blend-mode: multiply;
+}
+
+.crt::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.09;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ==========================================================================
+   Доступность: без анимации по запросу системы
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .scene-landscape,
+  .blink,
+  .hud-val.is-warn,
+  .scene-alert {
+    animation: none;
+  }
+}
