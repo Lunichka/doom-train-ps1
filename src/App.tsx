@@ -2,13 +2,20 @@ import React, { useState, useEffect, useRef } from 'react';
 import trainInside from './assets/train_inside.png';
 import landscape from './assets/landscape_view.png';
 import playerSprite from './assets/player.png';
-import babaZinaSprite from './assets/baba-zina.png';
-import olegSprite from './assets/oleg.png';
-import artemSprite from './assets/artem.png';
-import valeraSprite from './assets/valera.png';
-import dimonSprite from './assets/dimon.png';
-import uncleTolyaSprite from './assets/uncle-tolya.png';
-import motherAndIlyaSprite from './assets/ilya-and-mother.png';
+import babaZinaNormal from './assets/baba-zina.png';
+import babaZinaAngry from './assets/baba-zina-angry.png';
+import olegNormal from './assets/oleg-normal.png';
+import olegAngry from './assets/oleg-angry.png';
+import artemNormal from './assets/artem.png';
+import artemAngry from './assets/artem-angry.png';
+import valeraNormal from './assets/valera-normal.png';
+import valeraAngry from './assets/valera-angry.png';
+import dimonNormal from './assets/dimon-normal.png';
+import dimonAngry from './assets/dimon-angry.png';
+import uncleTolyaNormal from './assets/uncle-tolya-normal.png';
+import uncleTolyaAngry from './assets/uncle-tolya-angry.png';
+import motherAndIlyaNormal from './assets/ilya-and-mother.png';
+import motherAndIlyaAngry from './assets/ilya-and-mother-angry.png';
 import fightScreen from './assets/fight-screen.png';
 import { PixelIcon, Cursor, Gauge, signed } from './pixel';
 
@@ -145,44 +152,44 @@ const NEIGHBORS = [
     id: 'babushka',
     name: 'Баба Зина',
     title: 'Владелица 4 сумк и форточки',
-    sprite: babaZinaSprite,
+    sprites: { normal: babaZinaNormal, angry: babaZinaAngry },
     bgAccent: 'from-emerald-950 to-slate-900',
     description: 'Везет рассаду и стратегический запас варёных яиц. Уверена, что сквозняк убивает быстрее радиации.',
     phrase: 'Закройте форточку, меня продует!',
     stats: { annoyance: 85, noise: 70, odor: 90 },
     actions: [
-      { text: 'Сдаться и закрыть окно', mentalEffect: -15, rageEffect: -25, log: 'Баба Зина довольна и щедро угостила вас мятым огурцом.' },
-      { text: 'Надеть наушники и сделать вид, что вы глухонемой', mentalEffect: -10, rageEffect: +15, log: 'Баба Зина громко вздыхает и крестит ваше сиденье.' },
-      { text: 'Открыть форточку настежь', mentalEffect: -35, rageEffect: +40, log: 'СКАНДАЛ! Активирован режим турбо-бухтения на весь вагон.' }
+      { text: 'Сдаться и закрыть окно', mood: 'normal', mentalEffect: -15, rageEffect: -25, log: 'Баба Зина довольна и щедро угостила вас мятым огурцом.' },
+      { text: 'Надеть наушники и сделать вид, что вы глухонемой', mood: 'angry', mentalEffect: -10, rageEffect: +15, log: 'Баба Зина громко вздыхает и крестит ваше сиденье.' },
+      { text: 'Открыть форточку настежь', mood: 'angry', mentalEffect: -35, rageEffect: +40, log: 'СКАНДАЛ! Активирован режим турбо-бухтения на весь вагон.' }
     ]
   },
   {
     id: 'tiktok_kid',
     name: 'Димон (8 лет)',
     title: 'Оператор мобильного ада',
-    sprite: dimonSprite,
+    sprites: { normal: dimonNormal, angry: dimonAngry },
     bgAccent: 'from-amber-950 to-slate-900',
     description: 'Смотрит рилсы и Skibidi Toilet без наушников. Каждые две минуты проверяет прочность вашей спинки кресла ногами.',
     phrase: 'МААААМ, купи чипсы, а этот чо злой сидит?',
     stats: { annoyance: 95, noise: 100, odor: 20 },
     actions: [
-      { text: 'Попросить родителей усмирить наследника', mentalEffect: -10, rageEffect: +20, log: 'Мама выдала базу: «Он же ребёнок, вам сложно потерпеть?!»' },
-      { text: 'Врубить тяжелый рок в ответ', mentalEffect: -20, rageEffect: +30, log: 'Вагон разделился на два лагеря. Идёт звуковая война.' },
-      { text: 'Сунуть ему жвачку', mentalEffect: -5, rageEffect: -15, log: 'Димон затих на 3 минуты, влепив жвачку под ваш столик.' }
+      { text: 'Попросить родителей усмирить наследника', mood: 'angry', mentalEffect: -10, rageEffect: +20, log: 'Мама выдала базу: «Он же ребёнок, вам сложно потерпеть?!»' },
+      { text: 'Врубить тяжелый рок в ответ', mood: 'angry', mentalEffect: -20, rageEffect: +30, log: 'Вагон разделился на два лагеря. Идёт звуковая война.' },
+      { text: 'Сунуть ему жвачку', mood: 'normal', mentalEffect: -5, rageEffect: -15, log: 'Димон затих на 3 минуты, влепив жвачку под ваш столик.' }
     ]
   },
   {
     id: 'dmb_man',
     name: 'Дядя Толя',
     title: 'Ветеран дембеля-1994',
-    sprite: uncleTolyaSprite,
+    sprites: { normal: uncleTolyaNormal, angry: uncleTolyaAngry },
     bgAccent: 'from-blue-950 to-slate-900',
     description: 'Запах чеснока, газеты «МК» и суровой мужской ностальгии. Утверждает, что раньше поезда летади быстрее.',
     phrase: 'Уважение имеешь? Ну-ка двинься, братишка!',
     stats: { annoyance: 75, noise: 85, odor: 95 },
     actions: [
-      { text: 'Выслушать часовую историю про армию', mentalEffect: -15, rageEffect: -30, log: 'Толя похлопал вас по плечу и назвал сыном полка.' },
-      { text: 'Сказать, что вы удалили госуслуги и не пьете чай', mentalEffect: -25, rageEffect: +35, log: 'Толя разочарован в поколении снежинок.' },
+      { text: 'Выслушать часовую историю про армию', mood: 'normal', mentalEffect: -15, rageEffect: -30, log: 'Толя похлопал вас по плечу и назвал сыном полка.' },
+      { text: 'Сказать, что вы удалили госуслуги и не пьете чай', mood: 'angry', mentalEffect: -25, rageEffect: +35, log: 'Толя разочарован в поколении снежинок.' },
       { text: 'Притвориться мертвым', mentalEffect: -10, rageEffect: +10, log: 'Толя начал храпеть так, что вибрируют стаканы в подстаканниках.' }
     ]
   },
@@ -190,14 +197,14 @@ const NEIGHBORS = [
     id: 'crying_baby',
     name: 'Малыш Илюша и Мама',
     title: 'Живая сирена на 120 децибел',
-    sprite: motherAndIlyaSprite,
+    sprites: { normal: motherAndIlyaNormal, angry: motherAndIlyaAngry },
     bgAccent: 'from-purple-950 to-slate-900',
     description: 'Ультразвуковой плач, пробивающий любые шумоподавляющие наушники. У мамы в глазах экзистенциальный ужас.',
     phrase: 'УААААА! ААААААААА!',
     stats: { annoyance: 99, noise: 99, odor: 40 },
     actions: [
-      { text: 'Сделать укоризненный взгляд в сторону ребенка', mentalEffect: -20, rageEffect: +25, log: 'Мама посмотрела в ответ так, будто вы лично украли у неё детское пособие.' },
-      { text: 'Показать малышу фокус с пальцем', mentalEffect: +10, rageEffect: -10, log: 'Чудо! Илюша икнул и уставился на вас с уважением.' },
+      { text: 'Сделать укоризненный взгляд в сторону ребенка', mood: 'angry', mentalEffect: -20, rageEffect: +25, log: 'Мама посмотрела в ответ так, будто вы лично украли у неё детское пособие.' },
+      { text: 'Показать малышу фокус с пальцем', mood: 'normal', mentalEffect: +10, rageEffect: -10, log: 'Чудо! Илюша икнул и уставился на вас с уважением.' },
       { text: 'Бежать в тамбур к курильщикам', mentalEffect: -5, rageEffect: -15, log: 'В тамбуре пахнет гарью и безысходностью, зато тихо.' }
     ]
   },
@@ -205,14 +212,14 @@ const NEIGHBORS = [
     id: 'scanword_vendor',
     name: 'Валера-Бригадир',
     title: 'Король сканвордов и носков',
-    sprite: valeraSprite,
+    sprites: { normal: valeraNormal, angry: valeraAngry },
     bgAccent: 'from-yellow-950 to-slate-900',
     description: 'Каждые 15 минут материализуется в проходе с криками: «Сканворды, кроссворды, носки бамбук!»',
     phrase: 'Мужик, бери три пары, на год забудешь про дырки!',
     stats: { annoyance: 60, noise: 80, odor: 30 },
     actions: [
-      { text: 'Купить сканворд ради кроссворда про антилопу', mentalEffect: +15, rageEffect: -20, log: 'Вы застряли на слове «Африканское животное, 5 букв».' },
-      { text: 'Резко ответить: «Ничего не надо!»', mentalEffect: -10, rageEffect: +15, log: 'Валера оскорбился и назвал вас занудой.' },
+      { text: 'Купить сканворд ради кроссворда про антилопу', mood: 'normal', mentalEffect: +15, rageEffect: -20, log: 'Вы застряли на слове «Африканское животное, 5 букв».' },
+      { text: 'Резко ответить: «Ничего не надо!»', mood: 'angry', mentalEffect: -10, rageEffect: +15, log: 'Валера оскорбился и назвал вас занудой.' },
       { text: 'Спрятать ноги под плед', mentalEffect: -5, rageEffect: +5, log: 'Валера задел вашу коленку баулом с шерстяными носками.' }
     ]
   },
@@ -220,30 +227,30 @@ const NEIGHBORS = [
     id: 'bard_guitarist',
     name: 'Олег "Шестая струна"',
     title: 'Инвестор трёх блатных аккордов',
-    sprite: olegSprite,
+    sprites: { normal: olegNormal, angry: olegAngry },
     bgAccent: 'from-orange-950 to-slate-900',
     description: 'Везет гитару без чехла. В его репертуаре исключительно песни у костра, исполненные мимо нот.',
     phrase: 'А давайте «Батарейку» хором, а?',
     stats: { annoyance: 70, noise: 90, odor: 30 },
     actions: [
-      { text: 'Затянуть «Цой жив»', mentalEffect: +10, rageEffect: -20, log: 'Полвагона подхватило. Душевно, черт побери!' },
-      { text: 'Попросить играть потише или зачехлить инструмент', mentalEffect: -15, rageEffect: +25, log: 'Олег заявил, что вы глухи к высокому искусству.' },
-      { text: 'Начать фальшивить еще громче в противофазе', mentalEffect: +5, rageEffect: -10, log: 'Вы заглушили барда своей какофонией. Победа!' }
+      { text: 'Затянуть «Цой жив»', mood: 'normal', mentalEffect: +10, rageEffect: -20, log: 'Полвагона подхватило. Душевно, черт побери!' },
+      { text: 'Попросить играть потише или зачехлить инструмент', mood: 'angry', mentalEffect: -15, rageEffect: +25, log: 'Олег заявил, что вы глухи к высокому искусству.' },
+      { text: 'Начать фальшивить еще громче в противофазе', mood: 'angry', mentalEffect: +5, rageEffect: -10, log: 'Вы заглушили барда своей какофонией. Победа!' }
     ]
   },
   {
     id: 'tech_bro',
     name: 'Артем Senior IT',
     title: 'Лид проекта на платной «симке»',
-    sprite: artemSprite,
+    sprites: { normal: artemNormal, angry: artemAngry },
     bgAccent: 'from-cyan-950 to-slate-900',
     description: 'Проводит дейли-митинг по зуму через раздачу с телефона, обсуждая деплой на прод прямо из тамбура.',
     phrase: 'Коллеги, у меня отвалился VPN, давайте ретаргетнем спринт!',
     stats: { annoyance: 80, noise: 85, odor: 10 },
     actions: [
-      { text: 'Подсказать ему правильный синтаксис SQL', mentalEffect: +15, rageEffect: -15, log: 'Артем зауважал вас и предложил рефералку в свой яндекс-стартап.' },
-      { text: 'Закрыть его макбук рукой', mentalEffect: -40, rageEffect: +50, log: 'ЭПИЧНАЯ БИТВА ЗА ПРОПУСКНУЮ СПОСОБНОСТЬ СЕТИ!' },
-      { text: 'Включить торрент на закачку сериалов', mentalEffect: -10, rageEffect: +20, log: 'У Артема упал созвон с инвесторами. Лицо бесценно.' }
+      { text: 'Подсказать ему правильный синтаксис SQL', mood: 'normal', mentalEffect: +15, rageEffect: -15, log: 'Артем зауважал вас и предложил рефералку в свой яндекс-стартап.' },
+      { text: 'Закрыть его макбук рукой', mood: 'angry', mentalEffect: -40, rageEffect: +50, log: 'ЭПИЧНАЯ БИТВА ЗА ПРОПУСКНУЮ СПОСОБНОСТЬ СЕТИ!' },
+      { text: 'Включить торрент на закачку сериалов', mood: 'angry', mentalEffect: -10, rageEffect: +20, log: 'У Артема упал созвон с инвесторами. Лицо бесценно.' }
     ]
   }
 ];
@@ -299,6 +306,8 @@ export default function App() {
   const [achievements, setAchievements] = useState(ACHIEVEMENTS);
   const [isAudioActive, setIsAudioActive] = useState(false);
   const [usedItemTypes, setUsedItemTypes] = useState(new Set());
+  // Настроение текущего соседа: 'normal' | 'angry'. Меняется реакцией на действие игрока (поле mood у действия).
+  const [neighborMood, setNeighborMood] = useState('normal');
 
   const neighbor = NEIGHBORS[neighborIndex];
 
@@ -365,6 +374,7 @@ export default function App() {
     const newRage = Math.min(100, Math.max(0, rageLevel + action.rageEffect));
 
     if (action.rageEffect > 20) soundFx.playRage();
+    if (action.mood) setNeighborMood(action.mood);
 
     setMentalHealth(newMental);
     setRageLevel(newRage);
@@ -401,6 +411,7 @@ export default function App() {
     soundFx.playClick();
     const nextIdx = (neighborIndex + 1) % NEIGHBORS.length;
     setNeighborIndex(nextIdx);
+    setNeighborMood('normal');
     setGameLogs((prev) => [
       `Станция! Поезд тронулся. Рядом с вами теперь: ${NEIGHBORS[nextIdx].name}`,
       ...prev.slice(0, 5)
@@ -416,6 +427,7 @@ export default function App() {
     setGameLogs(['Поездка началась. Желаем вам крепких нервов!']);
     setInventory(INITIAL_ITEMS.map((item) => ({ ...item })));
     setNeighborIndex(0);
+    setNeighborMood('normal');
     setCurrentScreen('game');
   };
 
@@ -569,14 +581,16 @@ export default function App() {
                 </div>
                 <img className="scene-train" src={trainInside} alt="Интерьер старой электрички" />
                 <img className="scene-player" src={playerSprite} alt="Пассажир с рюкзаком" />
-                {neighbor.sprite && (
+                {/* Оба состояния лежат в одной позиции и уже загружены; видимо только текущее */}
+                {['normal', 'angry'].map((mood) => (
                   <img
-                    key={neighbor.id}
-                    className={`scene-neighbor scene-neighbor--${neighbor.id}`}
-                    src={neighbor.sprite}
-                    alt={neighbor.name}
+                    key={`${neighbor.id}-${mood}`}
+                    className={`scene-neighbor scene-neighbor--${neighbor.id}${mood === neighborMood ? ' is-on' : ''}`}
+                    src={neighbor.sprites[mood]}
+                    alt={mood === neighborMood ? neighbor.name : ''}
+                    aria-hidden={mood !== neighborMood}
                   />
-                )}
+                ))}
                 {(isRaging || isMentalLow) && <div className="scene-alert" aria-hidden="true" />}
                 <span className="scene-stamp">ЭЛЕКТРИЧКА · 07:42</span>
               </section>
@@ -585,7 +599,7 @@ export default function App() {
             {/* Диалоговое окно: портрет, имя, реплика */}
             <section className="win dialog" aria-live="polite">
               <div className="portrait" aria-hidden="true">
-                {neighbor.sprite && <img src={neighbor.sprite} alt="" />}
+                <img src={neighbor.sprites[neighborMood]} alt="" />
               </div>
               <div className="dialog-body">
                 <h2 className="dialog-name">{neighbor.name}</h2>
