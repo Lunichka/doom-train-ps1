@@ -196,15 +196,16 @@ const NEIGHBORS = [
   {
     id: 'crying_baby',
     name: 'Малыш Илюша и Мама',
-    title: 'Живая сирена на 120 децибел',
-    sprites: { normal: motherAndIlyaNormal, angry: motherAndIlyaAngry },
+    title: 'Режутся зубы. Это не его вина, но это 120 децибел',
+    sprites: { normal: motherAndIlyaNormal, angry: motherAndIlyaNormal },
     bgAccent: 'from-purple-950 to-slate-900',
-    description: 'Ультразвуковой плач, пробивающий любые шумоподавляющие наушники. У мамы в глазах экзистенциальный ужас.',
+    description: 'Ультразвуковой плач, пробивающий любые шумоподавляющие наушники. Мама уже перепробовала всё: песенку, соску и «смотри, птичка».',
     phrase: 'УААААА! ААААААААА!',
-    stats: { annoyance: 99, noise: 99, odor: 40 },
+    stats: { annoyance: 99, noise: 99, odor: 10 },
     actions: [
-      { text: 'Сделать укоризненный взгляд в сторону ребенка', mood: 'angry', mentalEffect: -20, rageEffect: +25, log: 'Мама посмотрела в ответ так, будто вы лично украли у неё детское пособие.' },
+      { text: 'Сделать укоризненный взгляд в сторону ребенка', mood: 'angry', mentalEffect: -20, rageEffect: +25, log: 'Илюша обиделся и заплакал ещё громче. Мама вздохнула. Вы почувствовали себя Бабой Зиной.' },
       { text: 'Показать малышу фокус с пальцем', mood: 'normal', mentalEffect: +10, rageEffect: -10, log: 'Чудо! Илюша икнул и уставился на вас с уважением.' },
+      { text: 'Предложить маме подержать её сумку', mood: 'normal', mentalEffect: +15, rageEffect: -15, log: 'Мама шепчет «спасибо». Илюша затих и сосёт палец. Вы — свой человек.' },
       { text: 'Бежать в тамбур к курильщикам', mentalEffect: -5, rageEffect: -15, log: 'В тамбуре пахнет гарью и безысходностью, зато тихо.' }
     ]
   },
