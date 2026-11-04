@@ -197,7 +197,7 @@ const NEIGHBORS = [
     id: 'crying_baby',
     name: 'Малыш Илюша и Мама',
     title: 'Режутся зубы. Это не его вина, но это 120 децибел',
-    sprites: { normal: motherAndIlyaNormal, angry: motherAndIlyaNormal },
+    sprites: { normal: motherAndIlyaNormal, angry: motherAndIlyaAngry },
     bgAccent: 'from-purple-950 to-slate-900',
     description: 'Ультразвуковой плач, пробивающий любые шумоподавляющие наушники. Мама уже перепробовала всё: песенку, соску и «смотри, птичка».',
     phrase: 'УААААА! ААААААААА!',
