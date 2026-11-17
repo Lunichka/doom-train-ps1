@@ -151,7 +151,7 @@ const NEIGHBORS = [
   {
     id: 'babushka',
     name: 'Баба Зина',
-    title: 'Владелица 4 сумк и форточки',
+    title: 'Владелица 4 сумок и форточки',
     sprites: { normal: babaZinaNormal, angry: babaZinaAngry },
     bgAccent: 'from-emerald-950 to-slate-900',
     description: 'Везет рассаду и стратегический запас варёных яиц. Уверена, что сквозняк убивает быстрее радиации.',
@@ -806,9 +806,6 @@ export default function App() {
 
       </main>
 
-      <footer className="ps1-foot">
-        Симулятор плацкарта • Doomer Retro Atmosphere • React Standalone Edition
-      </footer>
 
       {/* Сканлайны, зерно и виньетка — цветокоррекция «CRT-телевизор» */}
       <div className="crt" aria-hidden="true" />
