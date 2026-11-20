@@ -146,36 +146,35 @@ const INITIAL_ITEMS = [
   { id: 'zvezdochka', name: 'Бальзам Звёздочка', icon: 'balm', count: 1, desc: 'Оружие массового поражения. Перебивает даже запах носков дяди Толи (+15 менталки, -15 ярости).', healRage: -15, healMental: 15 },
   { id: 'valerian', name: 'Валерьянка', icon: 'bottle', count: 2, desc: 'Жидкое спокойствие. Убирает желание выйти на ходу (-30% ярости).', healRage: -30, healMental: 10 }
 ];
-
 const NEIGHBORS = [
   {
     id: 'babushka',
     name: 'Баба Зина',
-    title: 'Владелица 4 сумок и форточки',
+    title: 'Хозяйка четырёх сумок и форточки',
     sprites: { normal: babaZinaNormal, angry: babaZinaAngry },
     bgAccent: 'from-emerald-950 to-slate-900',
-    description: 'Везет рассаду и стратегический запас варёных яиц. Уверена, что сквозняк убивает быстрее радиации.',
+    description: 'Везёт рассаду и стратегический запас варёных яиц. Уверена, что сквозняк хуже радиации.',
     phrase: 'Закройте форточку, меня продует!',
     stats: { annoyance: 85, noise: 70, odor: 90 },
     actions: [
       { text: 'Сдаться и закрыть окно', mood: 'normal', mentalEffect: -15, rageEffect: -25, log: 'Баба Зина довольна и щедро угостила вас мятым огурцом.' },
-      { text: 'Надеть наушники и сделать вид, что вы глухонемой', mood: 'angry', mentalEffect: -10, rageEffect: +15, log: 'Баба Зина громко вздыхает и крестит ваше сиденье.' },
-      { text: 'Открыть форточку настежь', mood: 'angry', mentalEffect: -35, rageEffect: +40, log: 'СКАНДАЛ! Активирован режим турбо-бухтения на весь вагон.' }
+      { text: 'Надеть наушники и сделать вид, что вы глухонемой', mood: 'angry', mentalEffect: -10, rageEffect: +15, log: 'Баба Зина тяжело вздыхает и крестит ваше сиденье.' },
+      { text: 'Открыть форточку настежь', mood: 'angry', mentalEffect: -35, rageEffect: +40, log: 'Скандал: включился режим нон-стоп бухтения на весь вагон.' }
     ]
   },
   {
     id: 'tiktok_kid',
     name: 'Димон (8 лет)',
-    title: 'Оператор мобильного ада',
+    title: 'Любитель рилсов без наушников',
     sprites: { normal: dimonNormal, angry: dimonAngry },
     bgAccent: 'from-amber-950 to-slate-900',
-    description: 'Смотрит рилсы и Skibidi Toilet без наушников. Каждые две минуты проверяет прочность вашей спинки кресла ногами.',
+    description: 'Гоняет рилсы и Skibidi Toilet на полной громкости. Каждые две минуты проверяет спинку вашего кресла ногами.',
     phrase: 'МААААМ, купи чипсы, а этот чо злой сидит?',
     stats: { annoyance: 95, noise: 100, odor: 20 },
     actions: [
-      { text: 'Попросить родителей усмирить наследника', mood: 'angry', mentalEffect: -10, rageEffect: +20, log: 'Мама выдала базу: «Он же ребёнок, вам сложно потерпеть?!»' },
-      { text: 'Врубить тяжелый рок в ответ', mood: 'angry', mentalEffect: -20, rageEffect: +30, log: 'Вагон разделился на два лагеря. Идёт звуковая война.' },
-      { text: 'Сунуть ему жвачку', mood: 'normal', mentalEffect: -5, rageEffect: -15, log: 'Димон затих на 3 минуты, влепив жвачку под ваш столик.' }
+      { text: 'Попросить родителей усмирить мелкого', mood: 'angry', mentalEffect: -10, rageEffect: +20, log: 'Мама ответила: «Он же ребёнок, вам сложно потерпеть?!»' },
+      { text: 'Врубить тяжёлый рок в ответ', mood: 'angry', mentalEffect: -20, rageEffect: +30, log: 'Вагон разделился на два лагеря. Началась звуковая вакханалия.' },
+      { text: 'Сунуть ему жвачку', mood: 'normal', mentalEffect: -5, rageEffect: -15, log: 'Димон затих на 3 минуты, прилепив жвачку под ваш столик.' }
     ]
   },
   {
@@ -184,28 +183,28 @@ const NEIGHBORS = [
     title: 'Ветеран дембеля-1994',
     sprites: { normal: uncleTolyaNormal, angry: uncleTolyaAngry },
     bgAccent: 'from-blue-950 to-slate-900',
-    description: 'Запах чеснока, газеты «МК» и суровой мужской ностальгии. Утверждает, что раньше поезда летади быстрее.',
-    phrase: 'Уважение имеешь? Ну-ка двинься, братишка!',
+    description: 'Запах чеснока и газеты «МК». Сидит и повторяет, что раньше страна одна была — от Бреста до Владивостока, ни тебе границ, ни таможен, ни дармоедов этих.',
+    phrase: 'Уважение имеешь? Ну-ка подвинься, братишка!',
     stats: { annoyance: 75, noise: 85, odor: 95 },
     actions: [
       { text: 'Выслушать часовую историю про армию', mood: 'normal', mentalEffect: -15, rageEffect: -30, log: 'Толя похлопал вас по плечу и назвал сыном полка.' },
-      { text: 'Сказать, что вы удалили госуслуги и не пьете чай', mood: 'angry', mentalEffect: -25, rageEffect: +35, log: 'Толя разочарован в поколении снежинок.' },
-      { text: 'Притвориться мертвым', mentalEffect: -10, rageEffect: +10, log: 'Толя начал храпеть так, что вибрируют стаканы в подстаканниках.' }
+      { text: 'Сказать, что вы удалили госуслуги и не пьёте', mood: 'angry', mentalEffect: -25, rageEffect: +35, log: 'Толя тяжело смотрит и качает головой.' },
+      { text: 'Притвориться мёртвым', mood: 'normal', mentalEffect: -10, rageEffect: +10, log: 'Толя захрапел так, что зазвенели стаканы в подстаканниках.' }
     ]
   },
   {
     id: 'crying_baby',
     name: 'Малыш Илюша и Мама',
-    title: 'Живая сирена на 120 децибел',
+    title: 'Сирена на 120 децибел',
     sprites: { normal: motherAndIlyaNormal, angry: motherAndIlyaAngry },
     bgAccent: 'from-purple-950 to-slate-900',
-    description: 'Ультразвуковой плач, пробивающий любые шумоподавляющие наушники. У мамы в глазах экзистенциальный ужас.',
+    description: 'Крик, который пробивает любые шумоподавляющие наушники. У мамы на лице чистая усталость.',
     phrase: 'УААААА! ААААААААА!',
     stats: { annoyance: 99, noise: 99, odor: 40 },
     actions: [
-      { text: 'Сделать укоризненный взгляд в сторону ребенка', mood: 'angry', mentalEffect: -20, rageEffect: +25, log: 'Мама посмотрела в ответ так, будто вы лично украли у неё детское пособие.' },
-      { text: 'Показать малышу фокус с пальцем', mood: 'normal', mentalEffect: +10, rageEffect: -10, log: 'Чудо! Илюша икнул и уставился на вас с уважением.' },
-      { text: 'Бежать в тамбур к курильщикам', mentalEffect: -5, rageEffect: -15, log: 'В тамбуре пахнет гарью и безысходностью, зато тихо.' }
+      { text: 'Кинуть укоризненный взгляд в сторону ребёнка', mood: 'angry', mentalEffect: -20, rageEffect: +25, log: 'Мама посмотрела так, будто вы лично отобрали у неё коляску.' },
+      { text: 'Показать малышу фокус с пальцем', mood: 'normal', mentalEffect: +10, rageEffect: -10, log: 'Илюша внезапно икнул и уставился на палец.' },
+      { text: 'Уйти в тамбур к курящим', mood: 'normal', mentalEffect: -5, rageEffect: -15, log: 'В тамбуре пахнет дымом и сыростью, зато хоть тихо.' }
     ]
   },
   {
@@ -214,46 +213,47 @@ const NEIGHBORS = [
     title: 'Король сканвордов и носков',
     sprites: { normal: valeraNormal, angry: valeraAngry },
     bgAccent: 'from-yellow-950 to-slate-900',
-    description: 'Каждые 15 минут материализуется в проходе с криками: «Сканворды, кроссворды, носки бамбук!»',
+    description: 'Каждые 15 минут появляется в проходе с криком: «Сканворды, кроссворды, носки бамбук!»',
     phrase: 'Мужик, бери три пары, на год забудешь про дырки!',
     stats: { annoyance: 60, noise: 80, odor: 30 },
     actions: [
       { text: 'Купить сканворд ради кроссворда про антилопу', mood: 'normal', mentalEffect: +15, rageEffect: -20, log: 'Вы застряли на слове «Африканское животное, 5 букв».' },
-      { text: 'Резко ответить: «Ничего не надо!»', mood: 'angry', mentalEffect: -10, rageEffect: +15, log: 'Валера оскорбился и назвал вас занудой.' },
-      { text: 'Спрятать ноги под плед', mentalEffect: -5, rageEffect: +5, log: 'Валера задел вашу коленку баулом с шерстяными носками.' }
+      { text: 'Резко ответить: «Ничего не надо!»', mood: 'angry', mentalEffect: -10, rageEffect: +15, log: 'Валера обиделся и пробурчал что-то про зануд.' },
+      { text: 'Поджать ноги под себя', mood: 'angry', mentalEffect: -5, rageEffect: +5, log: 'Валера всё равно задел коленку баулом с носками.' }
     ]
   },
   {
     id: 'bard_guitarist',
-    name: 'Олег "Шестая струна"',
-    title: 'Инвестор трёх блатных аккордов',
+    name: 'Олег «Шестая струна»',
+    title: 'Мастер трёх блатных аккордов',
     sprites: { normal: olegNormal, angry: olegAngry },
     bgAccent: 'from-orange-950 to-slate-900',
-    description: 'Везет гитару без чехла. В его репертуаре исключительно песни у костра, исполненные мимо нот.',
+    description: 'Таскает гитару без чехла. В репертуаре — песни у костра, часто мимо нот.',
     phrase: 'А давайте «Батарейку» хором, а?',
     stats: { annoyance: 70, noise: 90, odor: 30 },
     actions: [
-      { text: 'Затянуть «Цой жив»', mood: 'normal', mentalEffect: +10, rageEffect: -20, log: 'Полвагона подхватило. Душевно, черт побери!' },
-      { text: 'Попросить играть потише или зачехлить инструмент', mood: 'angry', mentalEffect: -15, rageEffect: +25, log: 'Олег заявил, что вы глухи к высокому искусству.' },
-      { text: 'Начать фальшивить еще громче в противофазе', mood: 'angry', mentalEffect: +5, rageEffect: -10, log: 'Вы заглушили барда своей какофонией. Победа!' }
+      { text: 'Затянуть что-нибудь из репертуара Горшка', mood: 'normal', mentalEffect: +10, rageEffect: -20, log: 'Полвагона подхватило. Внезапно даже душевно.' },
+      { text: 'Попросить играть потише или убрать гитару', mood: 'angry', mentalEffect: -15, rageEffect: +25, log: 'Олег заявил, что вы ничего не понимаете в музыке.' },
+      { text: 'Начать фальшивить ещё громче в противофазе', mood: 'angry', mentalEffect: +5, rageEffect: -10, log: 'Вы перекричали гитару своей какофонией.' }
     ]
   },
   {
     id: 'tech_bro',
-    name: 'Артем Senior IT',
-    title: 'Лид проекта на платной «симке»',
+    name: 'Артём Senior IT',
+    title: 'Лид созвонов на раздаче с телефона',
     sprites: { normal: artemNormal, angry: artemAngry },
     bgAccent: 'from-cyan-950 to-slate-900',
-    description: 'Проводит дейли-митинг по зуму через раздачу с телефона, обсуждая деплой на прод прямо из тамбура.',
-    phrase: 'Коллеги, у меня отвалился VPN, давайте ретаргетнем спринт!',
+    description: 'Проводит дейли по зуму с мобильного интернета и обсуждает выкатку на прод прямо из вагона.',
+    phrase: 'Коллеги, у меня отвалился VPN, давайте ретаргетнём спринт!',
     stats: { annoyance: 80, noise: 85, odor: 10 },
     actions: [
-      { text: 'Подсказать ему правильный синтаксис SQL', mood: 'normal', mentalEffect: +15, rageEffect: -15, log: 'Артем зауважал вас и предложил рефералку в свой яндекс-стартап.' },
-      { text: 'Закрыть его макбук рукой', mood: 'angry', mentalEffect: -40, rageEffect: +50, log: 'ЭПИЧНАЯ БИТВА ЗА ПРОПУСКНУЮ СПОСОБНОСТЬ СЕТИ!' },
-      { text: 'Включить торрент на закачку сериалов', mood: 'angry', mentalEffect: -10, rageEffect: +20, log: 'У Артема упал созвон с инвесторами. Лицо бесценно.' }
+      { text: 'Подсказать ему правильный синтаксис SQL', mood: 'normal', mentalEffect: +15, rageEffect: -15, log: 'Артём проникся и пообещал рефералку в стартап.' },
+      { text: 'Прикрыть крышку его макбука рукой', mood: 'angry', mentalEffect: -40, rageEffect: +50, log: 'Созвон сорван, раздача легла, а вы на грани нервного срыва.' },
+      { text: 'Включить тяжёлую закачку на торренте', mood: 'angry', mentalEffect: -10, rageEffect: +20, log: 'У Артёма умер созвон прямо посреди фразы про прод.' }
     ]
   }
 ];
+
 const TRAIN_ROUTES = [
   {
     id: 'short',
@@ -486,7 +486,7 @@ export default function App() {
             type="button"
             onClick={toggleSound}
             className={`btn btn--small ${isAudioActive ? 'is-on' : ''}`}
-            title="Звуковое сопровождение (стук колес)"
+            title="Звук (стук колёс)"
             aria-pressed={isAudioActive}
           >
             {isAudioActive ? 'ЗВУК ВКЛ' : 'ЗВУК ВЫКЛ'}
@@ -500,10 +500,10 @@ export default function App() {
         {currentScreen === 'intro' && (
           <section className="intro-screen" aria-label="Заставка Симулятора худшего соседа">
             <div className="intro-art-wrap">
-              <img className="intro-art" src={fightScreen} alt="Баба Зина и пассажир готовятся к битве в электричке. BABUSHKA CHUD — FIGHT!" />
+              <img className="intro-art" src={fightScreen} alt="Баба Зина и пассажир перед дракой в электричке. BABUSHKA CHUD — FIGHT!" />
               <div className="intro-art-vignette" aria-hidden="true" />
               <div className="intro-caption">
-                <span className="intro-eyebrow">ЭЛЕКТРИЧКА DOOMER-EDITION · 1982–∞</span>
+                <span className="intro-eyebrow">ВАГОН БЕЗ КОНДИЦИОНЕРА</span>
                 <h1>СИМУЛЯТОР ХУДШЕГО СОСЕДА</h1>
                 <p>Сохрани менталку. Не доводи Бабу Зину.</p>
                 <button
@@ -517,7 +517,7 @@ export default function App() {
                 </button>
               </div>
             </div>
-            <p className="intro-footnote">Пиксельная драма в пригородной электричке. Все персонажи вымышлены, все ситуации подозрительно знакомы.</p>
+            <p className="intro-footnote">Пиксельная игра про электричку в духе нулевых. Все совпадения с реальными поездками не случайны.</p>
           </section>
         )}
 
