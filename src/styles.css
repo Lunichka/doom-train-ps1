@@ -129,29 +129,39 @@ dd {
 /* ==========================================================================
    Каркас страницы
    ========================================================================== */
-.ps1 {
-  min-height: 100vh;
+.viewport {
+  position: fixed;
+  inset: 0;
   display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 16px 8px 24px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
   background: var(--page);
 }
 
-.titlebar,
-.ps1-main,
-.ps1-foot {
-  width: 100%;
-  max-width: 960px;
-  margin-left: auto;
-  margin-right: auto;
+/* Один экран 4:3. Всё помещается без прокрутки; App масштабирует экран целиком через zoom. */
+.ps1 {
+  position: relative;
+  flex: none;
+  width: 1024px;
+  height: 768px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  overflow: hidden;
+  background: var(--page);
+}
+
+.titlebar {
+  flex: none;
 }
 
 .ps1-main {
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
 }
 
 .ps1-foot {
@@ -203,11 +213,10 @@ dd {
    ========================================================================== */
 .titlebar {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 8px 16px;
-  padding: 8px 12px;
+  gap: 16px;
+  padding: 4px 12px;
 }
 
 .titlebar-name {
@@ -265,6 +274,7 @@ dd {
 }
 
 .btn--small {
+  gap: 8px;
   padding: 2px 10px;
 }
 
@@ -441,7 +451,7 @@ dd {
    ========================================================================== */
 .gauge {
   position: relative;
-  height: 24px;
+  height: 18px;
   background: #2a0e16;
   border: 2px solid #bf9b3c;
   box-shadow:
@@ -499,14 +509,14 @@ dd {
 
 .hud {
   display: grid;
-  gap: 16px;
+  gap: 4px;
 }
 
 .hud-head {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 6px;
+  margin-bottom: 2px;
 }
 
 .hud-label--mental {
@@ -522,82 +532,46 @@ dd {
   animation: blink 1s steps(1, end) infinite;
 }
 
-.stats {
-  display: grid;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.stat {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  row-gap: 4px;
-}
-
-.stat .gauge {
-  grid-column: 1 / -1;
-}
 
 /* ==========================================================================
-   Экран игры
+   Экран игры: сцена сверху, под ней две колонки. Высоты подогнаны под 768 px.
    ========================================================================== */
 .game {
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
 }
 
-.game-grid {
+.game-bottom {
+  flex: 1;
+  min-height: 0;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: start;
-  gap: 16px;
+  grid-template-columns: minmax(0, 1fr) 392px;
+  gap: 8px;
 }
 
 .col {
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-}
-
-@media (max-width: 899px) {
-  .game-grid {
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* на узких экранах: шкалы → действия → рюкзак → описание */
-  .col {
-    display: contents;
-  }
-
-  .hud-slot {
-    order: 1;
-  }
-
-  .commands-slot {
-    order: 2;
-  }
-
-  .bag-slot {
-    order: 3;
-  }
-
-  .dossier-slot {
-    order: 4;
-  }
+  gap: 8px;
 }
 
 .dialog {
+  flex: none;
   display: flex;
-  align-items: flex-start;
-  gap: 16px;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 12px 6px 8px;
 }
 
 .portrait {
-  flex: 0 0 88px;
-  width: 88px;
-  height: 88px;
+  position: relative;
+  flex: 0 0 72px;
+  width: 72px;
+  height: 72px;
   overflow: hidden;
   background: radial-gradient(circle at 50% 30%, #2a3260, var(--well) 80%);
   border: 2px solid;
@@ -610,6 +584,14 @@ dd {
   height: 100%;
   object-fit: cover;
   object-position: 50% 6%;
+}
+
+/* портрет из пиксельного спрайта: голова в целом масштабе 3x */
+.portrait .portrait-px {
+  position: absolute;
+  height: auto;
+  max-width: none;
+  object-fit: initial;
   image-rendering: pixelated;
 }
 
@@ -622,22 +604,132 @@ dd {
 }
 
 .dialog-title {
+  margin-left: 16px;
   color: #ff9d88;
 }
 
+.scene-stamp-time {
+  margin-left: 12px;
+}
+
 .dialog-text {
-  margin-top: 8px;
+  margin-top: 4px;
+}
+
+.commands {
+  flex: 1;
+  min-height: 0;
+  padding: 6px 10px;
+}
+
+.menu--tight {
+  gap: 0;
+}
+
+.menu--tight .menu-item {
+  padding: 3px 12px 3px 4px;
+}
+
+.menu-item--station .menu-text {
+  color: var(--gold);
+}
+
+/* HUD прямо на сцене, в левом верхнем углу — как в игре */
+.scene-hud {
+  position: absolute;
+  z-index: 6;
+  top: 8px;
+  left: 8px;
+  width: 296px;
+  padding: 6px 10px 8px;
+}
+
+.tabs-win {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 10px;
+}
+
+.tabs {
+  flex: none;
+  display: flex;
+  gap: 4px;
+}
+
+.tab {
+  flex: 1;
+  padding: 0 6px;
+  color: var(--dim);
+  font-size: 16px;
+  line-height: 26px;
+  text-shadow: 1px 1px 0 #000;
+  background: var(--well);
+  border: 2px solid;
+  border-color: var(--bevel-lo) var(--bevel-hi) var(--bevel-hi) var(--bevel-lo);
+}
+
+.tab:hover {
+  color: var(--text);
+}
+
+.tab.is-on {
+  color: var(--gold);
+  background: linear-gradient(180deg, #4d5d9e 0%, #2d386f 100%);
+  border-color: var(--bevel-hi) var(--bevel-lo) var(--bevel-lo) var(--bevel-hi);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.tab-panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--bevel-lo) var(--well);
+}
+
+.menu--items {
+  gap: 0;
+}
+
+.menu--items .menu-item {
+  padding: 3px 8px 3px 4px;
+}
+
+.tab-panel .help {
+  flex: 1;
+  min-height: 0;
+  margin-top: 0;
 }
 
 .dossier-desc {
   color: #d4d7ee;
 }
 
-.log {
-  height: 136px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--bevel-lo) var(--well);
+.stats {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+}
+
+.stat {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat dd {
+  text-align: right;
 }
 
 .log p + p {
@@ -649,29 +741,77 @@ dd {
 }
 
 .log-old {
-  color: #8f94bb;
+  color: #a3a8cc;
 }
 
-.log-row {
+/* Последнее событие поверх сцены — строка диалога */
+.scene-msg {
+  position: absolute;
+  z-index: 6;
+  top: 8px;
+  left: 316px;
+  right: 8px;
+  padding: 6px 12px;
+  color: var(--gold);
+  animation: msg-in 240ms steps(3, end) both;
+}
+
+@keyframes msg-in {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Окно ачивок поверх экрана и уведомление */
+.overlay {
+  position: absolute;
+  z-index: 50;
+  inset: 0;
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  background: rgba(4, 5, 14, 0.72);
 }
 
-@media (min-width: 720px) {
-  .log-row {
-    flex-direction: row;
-    align-items: stretch;
-  }
+.trophies {
+  width: 100%;
+  max-width: 720px;
+  padding: 16px 20px;
+}
 
-  .log {
-    flex: 2;
-  }
+.toast {
+  position: absolute;
+  z-index: 60;
+  /* в правом нижнем углу сцены, чтобы не закрывать строку события сверху */
+  top: 352px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  border-color: #f0d27a #8a6a20 #8a6a20 #f0d27a;
+  animation: msg-in 240ms steps(3, end) both;
+}
 
-  .log-row .btn--wide {
-    flex: 1;
-    width: auto;
-  }
+.toast-head {
+  color: var(--gold);
+}
+
+.rotate-hint {
+  position: fixed;
+  z-index: 200;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  padding: 10px 12px;
+  color: var(--text);
+  text-align: center;
+  background: var(--win-c);
+  border: 2px solid var(--bevel-hi);
 }
 
 /* ==========================================================================
@@ -679,7 +819,7 @@ dd {
    ========================================================================== */
 .trophy-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -740,7 +880,7 @@ dd {
   gap: 16px;
   width: 100%;
   max-width: 720px;
-  margin: 0 auto;
+  margin: auto;
   padding: 24px 20px;
   text-align: center;
 }
@@ -989,7 +1129,6 @@ dd {
   overflow: hidden;
   width: 100%;
   aspect-ratio: 1408 / 768;
-  min-height: 320px;
   background: #100e1a;
   border: 2px solid;
   border-color: var(--bevel-hi) var(--bevel-lo) var(--bevel-lo) var(--bevel-hi);
@@ -1063,33 +1202,9 @@ dd {
   text-align: center;
 }
 
-@media (min-width: 900px) {
-  .intro-caption h1 {
-    font-size: 32px;
-    line-height: 40px;
-  }
-}
-
-@media (max-width: 640px) {
-  .intro-art-wrap {
-    min-height: 420px;
-    aspect-ratio: auto;
-  }
-
-  .intro-art {
-    position: absolute;
-    inset: 0;
-    object-fit: cover;
-    object-position: center;
-  }
-
-  .intro-caption {
-    padding: 16px 10px;
-  }
-
-  .intro-caption h1 {
-    max-width: 340px;
-  }
+.intro-caption h1 {
+  font-size: 32px;
+  line-height: 40px;
 }
 
 /* ==========================================================================
@@ -1097,7 +1212,7 @@ dd {
    Поверх всего, кликов не перехватывает.
    ========================================================================== */
 .crt {
-  position: fixed;
+  position: absolute;
   inset: 0;
   z-index: 100;
   pointer-events: none;
@@ -1131,6 +1246,8 @@ dd {
   .blink,
   .hud-val.is-warn,
   .scene-alert,
+  .scene-msg,
+  .toast,
   .scene-neighbor.is-on {
     animation: none;
   }
@@ -1147,4 +1264,61 @@ dd {
 .portrait img,
 .intro-art {
   image-rendering: auto;
+}
+
+/* ==========================================================================
+   Пиксельные спрайты (нарисованы вручную в Piskel, 64 px по высоте).
+   Все в одном масштабе: 1 пиксель спрайта = 7.7 px исходного вагона.
+   Низ тела и центр стоят там же, где у прежних картинок.
+   ========================================================================== */
+.scene-player.is-pixel,
+.scene-neighbor.is-pixel {
+  height: 64.167%;
+  image-rendering: pixelated;
+}
+
+.scene-player.is-pixel {
+  left: 27.374%;
+  bottom: 2.513%;
+}
+
+.scene-neighbor--babushka.is-pixel {
+  right: 28.91%;
+  bottom: 3.516%;
+}
+
+.scene-neighbor--tiktok_kid.is-pixel {
+  right: 28.645%;
+  bottom: 3.164%;
+}
+
+.scene-neighbor--dmb_man.is-pixel {
+  right: 28.782%;
+  bottom: 4.167%;
+}
+
+.scene-neighbor--crying_baby.is-pixel {
+  right: 29.66%;
+  bottom: 0.82%;
+}
+
+/* Экраны меню стоят по центру экрана 4:3 */
+.ps1-main > .screen,
+.ps1-main > .intro-screen {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.ps1-main > .route-screen {
+  padding: 24px 32px;
+}
+
+/* Подписи эффектов читались плохо — чуть светлее */
+.menu-fx {
+  color: #b9bedf;
+}
+
+/* Вагон перерисован вручную (284×100, тот же масштаб, что у спрайтов) — чёткие пиксели */
+.scene-train {
+  image-rendering: pixelated;
 }
