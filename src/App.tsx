@@ -174,7 +174,7 @@ const NEIGHBORS = [
     name: 'Димон (8 лет)',
     title: 'Любитель рилсов без наушников',
     sprites: { normal: dimonNormal, angry: dimonAngry },
-    portrait: { w: 132, left: -45, top: -6 },
+    portrait: { w: 102, left: -27, top: 3 },
     bgAccent: 'from-amber-950 to-slate-900',
     description: 'Гоняет рилсы и Skibidi Toilet на полной громкости. Каждые две минуты проверяет спинку вашего кресла ногами.',
     phrase: 'МААААМ, купи чипсы, а этот чо злой сидит?',
