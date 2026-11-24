@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import trainInside from './assets/pixel/wagon.png';
-import landscape from './assets/landscape_view.png';
+import landscape from './assets/pixel/forest.png';
 import playerSprite from './assets/pixel/player.png';
 import babaZinaNormal from './assets/pixel/baba-zina-normal.png';
 import babaZinaAngry from './assets/pixel/baba-zina-angry.png';
-import olegNormal from './assets/oleg-normal.png';
-import olegAngry from './assets/oleg-angry.png';
-import artemNormal from './assets/artem-normal.png';
-import artemAngry from './assets/artem-angry.png';
-import valeraNormal from './assets/valera-normal.png';
-import valeraAngry from './assets/valera-angry.png';
+import olegNormal from './assets/pixel/oleg-normal.png';
+import olegAngry from './assets/pixel/oleg-angry.png';
+import artemNormal from './assets/pixel/artem-normal.png';
+import artemAngry from './assets/pixel/artem-angry.png';
+import valeraNormal from './assets/pixel/valera-normal.png';
+import valeraAngry from './assets/pixel/valera-angry.png';
 import dimonNormal from './assets/pixel/dimon-normal.png';
 import dimonAngry from './assets/pixel/dimon-angry.png';
 import uncleTolyaNormal from './assets/pixel/uncle-tolya-normal.png';
@@ -221,6 +221,7 @@ const NEIGHBORS = [
     name: 'Валера-Бригадир',
     title: 'Король сканвордов и носков',
     sprites: { normal: valeraNormal, angry: valeraAngry },
+    portrait: { w: 180, left: -58, top: -3 },
     bgAccent: 'from-yellow-950 to-slate-900',
     description: 'Каждые 15 минут появляется в проходе с криком: «Сканворды, кроссворды, носки бамбук!»',
     phrase: 'Мужик, бери три пары, на год забудешь про дырки!',
@@ -236,6 +237,7 @@ const NEIGHBORS = [
     name: 'Олег «Шестая струна»',
     title: 'Мастер трёх блатных аккордов',
     sprites: { normal: olegNormal, angry: olegAngry },
+    portrait: { w: 144, left: -45, top: -3 },
     bgAccent: 'from-orange-950 to-slate-900',
     description: 'Таскает гитару без чехла. В репертуаре — песни у костра, часто мимо нот.',
     phrase: 'А давайте «Батарейку» хором, а?',
@@ -251,6 +253,7 @@ const NEIGHBORS = [
     name: 'Артём Senior IT',
     title: 'Лид созвонов на раздаче с телефона',
     sprites: { normal: artemNormal, angry: artemAngry },
+    portrait: { w: 120, left: -21, top: -3 },
     bgAccent: 'from-cyan-950 to-slate-900',
     description: 'Проводит дейли по зуму с мобильного интернета и обсуждает выкатку на прод прямо из вагона.',
     phrase: 'Коллеги, у меня отвалился VPN, давайте ретаргетнём спринт!',

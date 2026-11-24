@@ -1322,3 +1322,45 @@ dd {
 .scene-train {
   image-rendering: pixelated;
 }
+
+/* Целочисленный масштаб: 1 пиксель вагона и спрайтов = ровно 3 пикселя экрана (284×100 → 852×300) */
+.stage {
+  display: flex;
+  justify-content: center;
+  background: #05060c;
+}
+
+.train-scene {
+  flex: none;
+  width: 852px;
+  height: 300px;
+  aspect-ratio: auto;
+  box-sizing: content-box;
+}
+
+.scene-player.is-pixel,
+.scene-neighbor.is-pixel {
+  height: 192px;
+}
+
+/* Лес перерисован вручную (284×100) — чёткие пиксели */
+.scene-landscape img {
+  image-rendering: pixelated;
+}
+
+/* Валера стоит в проходе (84 px по высоте), Олег и Артём сидят на месте Зины */
+.scene-neighbor--scanword_vendor.is-pixel {
+  height: 252px;
+  right: 39.4%;
+  bottom: 2%;
+}
+
+.scene-neighbor--bard_guitarist.is-pixel {
+  right: 26.76%;
+  bottom: 3.3%;
+}
+
+.scene-neighbor--tech_bro.is-pixel {
+  right: 28.17%;
+  bottom: 3.3%;
+}
