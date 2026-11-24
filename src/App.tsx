@@ -18,6 +18,18 @@ import motherAndIlyaNormal from './assets/pixel/ilya-and-mother-normal.png';
 import motherAndIlyaAngry from './assets/pixel/ilya-and-mother-angry.png';
 import coverArt from './assets/pixel/cover.png';
 import coverForest from './assets/pixel/forest-cover.png';
+import itemHeadphones from './assets/pixel/item-headphones.png';
+import itemDoshik from './assets/pixel/item-doshik.png';
+import itemZvezdochka from './assets/pixel/item-zvezdochka.png';
+import itemValerian from './assets/pixel/item-valerian.png';
+
+// Предметы нарисованы вручную. Масштаб — наибольшее целое, при котором иконка влезает в 34×32
+const ITEM_ART = {
+  headphones: { src: itemHeadphones, w: 34, h: 30, scale: 1 },
+  doshik: { src: itemDoshik, w: 24, h: 20, scale: 1 },
+  zvezdochka: { src: itemZvezdochka, w: 10, h: 6, scale: 3 },
+  valerian: { src: itemValerian, w: 10, h: 20, scale: 1 },
+};
 import { PixelIcon, Cursor, Gauge, signed } from './pixel';
 
 // --- SOUND ENGINE (Web Audio API Synthesizer) ---
@@ -802,7 +814,13 @@ export default function App() {
                               className={`menu-item menu-item--hover ${item.count <= 0 ? 'is-empty' : ''}`}
                             >
                               <span className="menu-cursor"><Cursor /></span>
-                              <PixelIcon name={item.icon} scale={2} className="item-icon" />
+                              {ITEM_ART[item.id] ? (
+                                <span className="item-icon item-art" aria-hidden="true">
+                                  <img src={ITEM_ART[item.id].src} alt="" style={{ width: ITEM_ART[item.id].w * ITEM_ART[item.id].scale, height: ITEM_ART[item.id].h * ITEM_ART[item.id].scale }} />
+                                </span>
+                              ) : (
+                                <PixelIcon name={item.icon} scale={2} className="item-icon" />
+                              )}
                               <span className="menu-body"><span className="menu-text">{item.name}</span></span>
                               <span className="item-count">{item.count}x</span>
                             </button>

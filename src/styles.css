@@ -1011,8 +1011,8 @@ dd {
 /* Баба Зина */
 .scene-neighbor--babushka {
   right: 29.22%;
-  bottom: 5.5%;
-  height: 54.868%;
+  bottom: 3.5%;
+  height: 56.868%;
 }
 
 /* Димон */
@@ -1283,23 +1283,23 @@ dd {
 }
 
 .scene-neighbor--babushka.is-pixel {
-  right: 30.91%;
-  bottom: 3.916%;
+  right: 28.91%;
+  bottom: 3.516%;
 }
 
 .scene-neighbor--tiktok_kid.is-pixel {
-  right: 25.645%;
-  bottom: 7.164%;
+  right: 28.645%;
+  bottom: 3.164%;
 }
 
 .scene-neighbor--dmb_man.is-pixel {
-  right: 30.782%;
-  bottom: 1.167%;
+  right: 28.782%;
+  bottom: 4.167%;
 }
 
 .scene-neighbor--crying_baby.is-pixel {
-  right: 32.66%;
-  bottom: 0.72%;
+  right: 29.66%;
+  bottom: 0.82%;
 }
 
 /* Экраны меню стоят по центру экрана 4:3 */
@@ -1356,13 +1356,13 @@ dd {
 }
 
 .scene-neighbor--bard_guitarist.is-pixel {
-  right: 30.76%;
-  bottom: 0.3%;
+  right: 26.76%;
+  bottom: 3.3%;
 }
 
 .scene-neighbor--tech_bro.is-pixel {
-  right: 30.17%;
-  bottom: -2.3%;
+  right: 28.17%;
+  bottom: 3.3%;
 }
 
 /* Обложка: арт 320×180 ×3 = 960×540, слева текст и шкалы поверх свободного поля арта */
@@ -1423,9 +1423,9 @@ dd {
 .scene-neighbor--tiktok_kid.is-pixel,
 .scene-neighbor--crying_baby.is-pixel,
 .scene-neighbor--bard_guitarist.is-pixel,
-.scene-neighbor--tech_bro.is-pixel { bottom: 3.5px; }
+.scene-neighbor--tech_bro.is-pixel { bottom: 7.5px; }
 .scene-neighbor--babushka.is-pixel,
-.scene-neighbor--dmb_man.is-pixel { bottom: 5.5px; }
+.scene-neighbor--dmb_man.is-pixel { bottom: 10.5px; }
 
 /* ---------- Обложка: живое окно ---------- */
 /* Слой с лесом лежит под обложкой; видно его только сквозь прозрачные стёкла (x 190–288, y 31–106 арта ×3) */
@@ -1463,8 +1463,8 @@ dd {
 /* Димон — ребёнок: холст 34×48, сидит на том же сиденье, ноги не достают до пола */
 .scene-neighbor--tiktok_kid.is-pixel {
   height: 144px;
-  right: 32.2%;
-  bottom: 20px;
+  right: 29.2%;
+  bottom: 30px;
 }
 
 /* Сидящие напротив опущены на 2 пикселя арта: садятся на сиденье, а не висят над ним */
@@ -1477,3 +1477,14 @@ dd {
   bottom: 12px;
   line-height: 22px;
 }
+
+/* Нарисованные иконки предметов: в общей ячейке 34×32, по центру, без сглаживания */
+.item-art {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 32px;
+}
+.item-art img { image-rendering: pixelated; }
