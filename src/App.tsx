@@ -16,7 +16,8 @@ import uncleTolyaNormal from './assets/pixel/uncle-tolya-normal.png';
 import uncleTolyaAngry from './assets/pixel/uncle-tolya-angry.png';
 import motherAndIlyaNormal from './assets/pixel/ilya-and-mother-normal.png';
 import motherAndIlyaAngry from './assets/pixel/ilya-and-mother-angry.png';
-import fightScreen from './assets/fight-screen.png';
+import coverArt from './assets/pixel/cover.png';
+import coverForest from './assets/pixel/forest-cover.png';
 import { PixelIcon, Cursor, Gauge, signed } from './pixel';
 
 // --- SOUND ENGINE (Web Audio API Synthesizer) ---
@@ -303,6 +304,12 @@ const ACHIEVEMENTS = [
   { id: 'survivor', title: 'Выживший', desc: 'Добраться до конечной', icon: 'trophy', unlocked: false },
 ];
 
+// Игровое время: поезд выезжает в 07:42 и идёт ~60 км/ч, т. е. 1 км = 1 минута
+function trainTime(km: number) {
+  const m = 7 * 60 + 42 + Math.floor(km);
+  return String(Math.floor(m / 60) % 24).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+}
+
 export default function App() {
   // Screen States: 'intro', 'route_select', 'game', 'gameover', 'victory'
   const [currentScreen, setCurrentScreen] = useState('intro');
@@ -391,7 +398,7 @@ export default function App() {
     setMentalHealth(newMental);
     setRageLevel(newRage);
 
-    const timeStamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const timeStamp = trainTime(distanceKm);
     setGameLogs((prev) => [`[${timeStamp}] ${action.log}`, ...prev.slice(0, 5)]);
   };
 
@@ -567,28 +574,33 @@ export default function App() {
 
         <main className="ps1-main">
 
-          {/* SCREEN 1: FIGHT INTRO */}
+          {/* SCREEN 1: ОБЛОЖКА — нарисована вручную (320×180, увеличена ровно ×3) */}
           {currentScreen === 'intro' && (
-            <section className="intro-screen" aria-label="Заставка Симулятора худшего соседа">
-              <div className="intro-art-wrap">
-                <img className="intro-art" src={fightScreen} alt="Баба Зина и пассажир перед дракой в электричке. BABUSHKA CHUD — FIGHT!" />
-                <div className="intro-art-vignette" aria-hidden="true" />
-                <div className="intro-caption">
-                  <span className="intro-eyebrow">ВАГОН БЕЗ КОНДИЦИОНЕРА</span>
-                  <h1>СИМУЛЯТОР ХУДШЕГО СОСЕДА</h1>
-                  <p>Сохрани менталку. Не доводи Бабу Зину.</p>
-                  <button
-                    type="button"
-                    autoFocus
-                    onClick={() => { soundFx.playClick(); setCurrentScreen('route_select'); }}
-                    className="btn btn--start"
-                  >
-                    <Cursor />
-                    <span className="blink">НАЧАТЬ ПОЕЗДКУ</span>
-                  </button>
-                </div>
+            <section className="cover" aria-label="Электричка DOOMER-EDITION">
+              {/* Лес за стеклом едет, как в самой игре; стёкла на cover.png прозрачные */}
+              <div className="cover-window" aria-hidden="true">
+                <div className="cover-landscape"><img src={coverForest} alt="" /><img src={coverForest} alt="" /></div>
               </div>
-              <p className="intro-footnote">Пиксельная игра про электричку в духе нулевых. Все совпадения с реальными поездками не случайны.</p>
+              <img className="cover-art" src={coverArt} alt="Окно электрички, на столике валерьянка, Дошик, бальзам Звёздочка и наушники" />
+              <div className="cover-side">
+                <h1 className="cover-sub">DOOMER-EDITION</h1>
+                <p className="cover-tag">Доедешь ли ты до конечной?</p>
+                <div className="cover-bars" aria-hidden="true">
+                  <div className="hud-head"><span className="hud-label hud-label--mental">МЕНТАЛКА</span><span className="hud-val">100%</span></div>
+                  <Gauge value={100} tone="mental" label="Менталка" />
+                  <div className="hud-head"><span className="hud-label hud-label--rage">ЯРОСТЬ</span><span className="hud-val">15%</span></div>
+                  <Gauge value={15} tone="rage" label="Ярость" />
+                </div>
+                <button
+                  type="button"
+                  autoFocus
+                  onClick={() => { soundFx.playClick(); setCurrentScreen('route_select'); }}
+                  className="btn btn--start cover-start"
+                >
+                  <Cursor />
+                  <span className="blink">СТАРТ</span>
+                </button>
+              </div>
             </section>
           )}
 
@@ -686,7 +698,7 @@ export default function App() {
                   {lastLog && (
                     <p key={lastLog} className="win scene-msg" aria-live="polite">{lastLog}</p>
                   )}
-                  <span className="scene-stamp">ЭЛЕКТРИЧКА <span className="scene-stamp-time">07:42</span></span>
+                  <span className="scene-stamp">ЭЛЕКТРИЧКА <span className="scene-stamp-time">{trainTime(distanceKm)}</span></span>
                 </section>
               </div>
 

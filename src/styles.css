@@ -1364,3 +1364,98 @@ dd {
   right: 28.17%;
   bottom: 3.3%;
 }
+
+/* Обложка: арт 320×180 ×3 = 960×540, слева текст и шкалы поверх свободного поля арта */
+.cover {
+  position: relative;
+  flex: none;
+  width: 960px;
+  height: 540px;
+  margin: auto;
+  background: #2b2a3a;
+  border: 2px solid var(--bevel-hi);
+}
+
+.cover-art {
+  position: absolute;
+  inset: 0;
+  width: 960px;
+  height: 540px;
+  image-rendering: pixelated;
+}
+
+.cover-side {
+  position: absolute;
+  left: 48px;
+  top: 144px;
+  width: 408px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cover-sub {
+  margin: 0;
+  color: #9fb4e8;
+  font-size: 40px;
+  line-height: 44px;
+  text-shadow: 3px 3px 0 #0b0b16;
+}
+
+.cover-tag {
+  color: var(--text);
+  font-size: 20px;
+}
+
+.cover-bars {
+  display: grid;
+  gap: 4px;
+  margin-top: 16px;
+}
+
+.cover-start {
+  align-self: flex-start;
+  margin-top: 24px;
+}
+
+/* Все сидящие соседи стоят ногами на одной линии пола (как Баба Зина и игрок):
+   низ нарисованных ног = 10.5 px от низа сцены. Пустые строки внизу холста учтены. */
+.scene-neighbor--tiktok_kid.is-pixel,
+.scene-neighbor--crying_baby.is-pixel,
+.scene-neighbor--bard_guitarist.is-pixel,
+.scene-neighbor--tech_bro.is-pixel { bottom: 7.5px; }
+.scene-neighbor--babushka.is-pixel,
+.scene-neighbor--dmb_man.is-pixel { bottom: 10.5px; }
+
+/* ---------- Обложка: живое окно ---------- */
+/* Слой с лесом лежит под обложкой; видно его только сквозь прозрачные стёкла (x 190–288, y 31–106 арта ×3) */
+.cover-window {
+  position: absolute;
+  left: 570px;
+  top: 90px;
+  width: 300px;
+  height: 232px;
+  overflow: hidden;
+  background: linear-gradient(#e5ddca 0 150px, #3f4231 150px 300px);   /* небо и земля под лесом */
+}
+.cover-landscape {
+  display: flex;
+  width: 1674px;                   /* два леса по 837 px (279×3) */
+  height: 300px;
+  background: transparent;         /* под лесом видны небо и земля окна */
+  animation: cover-forest 14s linear infinite;
+}
+.cover-landscape img { width: 837px; height: 300px; image-rendering: pixelated; }
+@keyframes cover-forest { from { transform: translateX(0); } to { transform: translateX(-837px); } }
+
+/* Вагон потряхивает на стыках: тук-тук, на 1 пиксель арта, потом пауза */
+.cover-art, .cover-window { animation: cover-bump 1.6s steps(1, end) infinite; }
+.cover-window .cover-landscape { animation: cover-forest 14s linear infinite; }
+@keyframes cover-bump {
+  0%, 12%, 30%, 100% { translate: 0 0; }
+  6%, 24%            { translate: 0 -3px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cover-art, .cover-window, .cover-landscape { animation: none; }
+}
