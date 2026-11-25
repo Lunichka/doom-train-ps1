@@ -172,7 +172,7 @@ const NEIGHBORS = [
     // Пиксельный спрайт (нарисован вручную): портрет — голова спрайта в 3x
     portrait: { w: 108, left: -19, top: -15 },
     bgAccent: 'from-emerald-950 to-slate-900',
-    description: 'Везёт рассаду и стратегический запас варёных яиц. Уверена, что сквозняк хуже радиации.',
+    description: 'Везёт рассаду и стратегический запас варёных яиц. Уверена, что легкое дуновение из форточки в +35 хуже радиации.',
     phrase: 'Закройте форточку, меня продует!',
     stats: { annoyance: 85, noise: 70, odor: 90 },
     actions: [
@@ -189,18 +189,18 @@ const NEIGHBORS = [
     portrait: { w: 102, left: -27, top: 3 },
     bgAccent: 'from-amber-950 to-slate-900',
     description: 'Гоняет рилсы и Skibidi Toilet на полной громкости. Каждые две минуты проверяет спинку вашего кресла ногами.',
-    phrase: 'МААААМ, купи чипсы, а этот чо злой сидит?',
+    phrase: 'МААААМ, купи чипсы, а этот че злой сидит?',
     stats: { annoyance: 95, noise: 100, odor: 20 },
     actions: [
       { text: 'Попросить родителей усмирить мелкого', mood: 'angry', mentalEffect: -10, rageEffect: +20, log: 'Мама ответила: «Он же ребёнок, вам сложно потерпеть?!»' },
       { text: 'Врубить тяжёлый рок в ответ', mood: 'angry', mentalEffect: -20, rageEffect: +30, log: 'Вагон разделился на два лагеря. Началась звуковая вакханалия.' },
-      { text: 'Сунуть ему жвачку', mood: 'normal', mentalEffect: -5, rageEffect: -15, log: 'Димон затих на 3 минуты, прилепив жвачку под ваш столик.' }
+      { text: 'Угостить чипсами', mood: 'normal', mentalEffect: -5, rageEffect: -15, log: 'Димон затих на 3 минуты, прилепив жвачку под ваш столик.' }
     ]
   },
   {
     id: 'dmb_man',
     name: 'Дядя Толя',
-    title: 'Ветеран дембеля-1994',
+    title: 'Ветеран дембеля',
     sprites: { normal: uncleTolyaNormal, angry: uncleTolyaAngry },
     portrait: { w: 132, left: -36, top: -6 },
     bgAccent: 'from-blue-950 to-slate-900',
@@ -236,11 +236,11 @@ const NEIGHBORS = [
     sprites: { normal: valeraNormal, angry: valeraAngry },
     portrait: { w: 180, left: -58, top: -3 },
     bgAccent: 'from-yellow-950 to-slate-900',
-    description: 'Каждые 15 минут появляется в проходе с криком: «Сканворды, кроссворды, носки бамбук!»',
+    description: 'Каждые 15 минут появляется в проходе с криком: «Напиточки, боевички, носки!»',
     phrase: 'Мужик, бери три пары, на год забудешь про дырки!',
     stats: { annoyance: 60, noise: 80, odor: 30 },
     actions: [
-      { text: 'Купить сканворд ради кроссворда про антилопу', mood: 'normal', mentalEffect: +15, rageEffect: -20, log: 'Вы застряли на слове «Африканское животное, 5 букв».' },
+      { text: 'Купить пару носков из вежливости', mood: 'normal', mentalEffect: +15, rageEffect: -20, log: 'Вы застряли на слове «Африканское животное, 5 букв».' },
       { text: 'Резко ответить: «Ничего не надо!»', mood: 'angry', mentalEffect: -10, rageEffect: +15, log: 'Валера обиделся и пробурчал что-то про зануд.' },
       { text: 'Поджать ноги под себя', mood: 'angry', mentalEffect: -5, rageEffect: +5, log: 'Валера всё равно задел коленку баулом с носками.' }
     ]
@@ -252,7 +252,7 @@ const NEIGHBORS = [
     sprites: { normal: olegNormal, angry: olegAngry },
     portrait: { w: 144, left: -45, top: -3 },
     bgAccent: 'from-orange-950 to-slate-900',
-    description: 'Таскает гитару без чехла. В репертуаре — песни у костра, часто мимо нот.',
+    description: 'Таскает гитару без чехла. В репертуаре песни у костра, часто мимо нот.',
     phrase: 'А давайте «Батарейку» хором, а?',
     stats: { annoyance: 70, noise: 90, odor: 30 },
     actions: [
