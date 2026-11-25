@@ -174,7 +174,7 @@ const NEIGHBORS = [
     // Пиксельный спрайт (нарисован вручную): портрет — голова спрайта в 3x
     portrait: { w: 108, left: -19, top: -15 },
     bgAccent: 'from-emerald-950 to-slate-900',
-    description: 'Везёт рассаду и стратегический запас варёных яиц. Уверена, что сквозняк хуже радиации.',
+    description: 'Везёт рассаду и стратегический запас варёных яиц. Уверена, что легкое дуновение из форточки в +35 хуже радиации.',
     phrase: 'Закройте форточку, меня продует!',
     stats: { annoyance: 85, noise: 70, odor: 90 },
     actions: [
@@ -191,7 +191,7 @@ const NEIGHBORS = [
     portrait: { w: 102, left: -27, top: 3 },
     bgAccent: 'from-amber-950 to-slate-900',
     description: 'Гоняет рилсы и Skibidi Toilet на полной громкости. Каждые две минуты проверяет спинку вашего кресла ногами.',
-    phrase: 'МААААМ, купи чипсы, а этот чо злой сидит?',
+    phrase: 'МААААМ, купи чипсы, а этот че злой сидит?',
     stats: { annoyance: 95, noise: 100, odor: 20 },
     actions: [
       { text: 'Попросить родителей усмирить мелкого', mood: 'angry', mentalEffect: -10, rageEffect: +20, log: 'Мама ответила: «Он же ребёнок, вам сложно потерпеть?!»' },
@@ -202,7 +202,7 @@ const NEIGHBORS = [
   {
     id: 'dmb_man',
     name: 'Дядя Толя',
-    title: 'Ветеран дембеля-1994',
+    title: 'Ветеран дембеля',
     sprites: { normal: uncleTolyaNormal, angry: uncleTolyaAngry },
     portrait: { w: 132, left: -36, top: -6 },
     bgAccent: 'from-blue-950 to-slate-900',
@@ -238,11 +238,11 @@ const NEIGHBORS = [
     sprites: { normal: valeraNormal, angry: valeraAngry },
     portrait: { w: 180, left: -58, top: -3 },
     bgAccent: 'from-yellow-950 to-slate-900',
-    description: 'Каждые 15 минут появляется в проходе с криком: «Сканворды, кроссворды, носки бамбук!»',
+    description: 'Каждые 15 минут появляется в проходе с криком: «Напиточки, носки, боевички»',
     phrase: 'Мужик, бери три пары, на год забудешь про дырки!',
     stats: { annoyance: 60, noise: 80, odor: 30 },
     actions: [
-      { text: 'Купить сканворд ради кроссворда про антилопу', mood: 'normal', mentalEffect: +15, rageEffect: -20, log: 'Вы застряли на слове «Африканское животное, 5 букв».' },
+      { text: 'Купить из вежливости пару носков', mood: 'normal', mentalEffect: +15, rageEffect: -20, log: 'Вы застряли на слове «Африканское животное, 5 букв».' },
       { text: 'Резко ответить: «Ничего не надо!»', mood: 'angry', mentalEffect: -10, rageEffect: +15, log: 'Валера обиделся и пробурчал что-то про зануд.' },
       { text: 'Поджать ноги под себя', mood: 'angry', mentalEffect: -5, rageEffect: +5, log: 'Валера всё равно задел коленку баулом с носками.' }
     ]
@@ -254,8 +254,8 @@ const NEIGHBORS = [
     sprites: { normal: olegNormal, angry: olegAngry },
     portrait: { w: 144, left: -45, top: -3 },
     bgAccent: 'from-orange-950 to-slate-900',
-    description: 'Таскает гитару без чехла. В репертуаре — песни у костра, часто мимо нот.',
-    phrase: 'А давайте «Батарейку» хором, а?',
+    description: 'Таскает гитару без чехла. В репертуаре песни у костра и мимо нот.',
+    phrase: 'Го «Батарейку» хором?',
     stats: { annoyance: 70, noise: 90, odor: 30 },
     actions: [
       { text: 'Затянуть что-нибудь из репертуара Горшка', mood: 'normal', mentalEffect: +10, rageEffect: -20, log: 'Полвагона подхватило. Внезапно даже душевно.' },
@@ -574,22 +574,22 @@ export default function App() {
   const lastLog = gameLogs[0];
 
   const hudEl = (
-                  <section className="win hud scene-hud" aria-label="Состояние">
-                    <div className="hud-item">
-                      <div className="hud-head">
-                        <span className="hud-label hud-label--mental">Менталка</span>
-                        <span className={`hud-val ${isMentalLow ? 'is-warn' : ''}`}>{Math.round(mentalHealth)}%</span>
-                      </div>
-                      <Gauge value={mentalHealth} tone="mental" label="Менталка" />
-                    </div>
-                    <div className="hud-item">
-                      <div className="hud-head">
-                        <span className="hud-label hud-label--rage">Уровень Ярости</span>
-                        <span className={`hud-val ${isRaging ? 'is-warn' : ''}`}>{Math.round(rageLevel)}%</span>
-                      </div>
-                      <Gauge value={rageLevel} tone="rage" label="Уровень Ярости" />
-                    </div>
-                  </section>
+    <section className="win hud scene-hud" aria-label="Состояние">
+      <div className="hud-item">
+        <div className="hud-head">
+          <span className="hud-label hud-label--mental">Менталка</span>
+          <span className={`hud-val ${isMentalLow ? 'is-warn' : ''}`}>{Math.round(mentalHealth)}%</span>
+        </div>
+        <Gauge value={mentalHealth} tone="mental" label="Менталка" />
+      </div>
+      <div className="hud-item">
+        <div className="hud-head">
+          <span className="hud-label hud-label--rage">Уровень Ярости</span>
+          <span className={`hud-val ${isRaging ? 'is-warn' : ''}`}>{Math.round(rageLevel)}%</span>
+        </div>
+        <Gauge value={rageLevel} tone="rage" label="Уровень Ярости" />
+      </div>
+    </section>
   );
   const msgEl = lastLog ? (
     <p key={lastLog} className="win scene-msg" aria-live="polite">{lastLog}</p>
@@ -642,10 +642,10 @@ export default function App() {
                 </>
               ) : (
                 <>
-                <div className="cover-window" aria-hidden="true">
-                  <div className="cover-landscape"><img src={coverForest} alt="" /><img src={coverForest} alt="" /></div>
-                </div>
-                <img className="cover-art" src={coverArt} alt="Окно электрички, на столике валерьянка, Дошик, бальзам Звёздочка и наушники" />
+                  <div className="cover-window" aria-hidden="true">
+                    <div className="cover-landscape"><img src={coverForest} alt="" /><img src={coverForest} alt="" /></div>
+                  </div>
+                  <img className="cover-art" src={coverArt} alt="Окно электрички, на столике валерьянка, Дошик, бальзам Звёздочка и наушники" />
                 </>
               )}
               <div className="cover-side">
