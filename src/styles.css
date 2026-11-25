@@ -1467,10 +1467,6 @@ dd {
   bottom: 30px;
 }
 
-/* Сидящие напротив опущены на 2 пикселя арта: садятся на сиденье, а не висят над ним */
-.scene-neighbor--crying_baby.is-pixel,
-.scene-neighbor--bard_guitarist.is-pixel,
-.scene-neighbor--tech_bro.is-pixel { bottom: 1.5px; }
 
 /* Табличка с временем — целиком внутри сцены */
 .scene-stamp {
@@ -1488,3 +1484,14 @@ dd {
   height: 32px;
 }
 .item-art img { image-rendering: pixelated; }
+
+/* Ачивка: внутри сцены, сразу под шкалами слева — не закрывает меню и реплику */
+.train-scene .toast {
+  top: 118px;
+  left: 8px;
+  right: auto;
+  width: auto;
+  max-width: 230px;
+  box-sizing: border-box;
+  z-index: 7;
+}

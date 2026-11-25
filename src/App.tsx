@@ -688,6 +688,17 @@ export default function App() {
                   ))}
                   {(isRaging || isMentalLow) && <div className="scene-alert" aria-hidden="true" />}
 
+                  {/* Уведомление о новой ачивке: в сцене, под шкалами слева, у героя */}
+                  {toast && (
+                    <div className="win toast" role="status">
+                      <PixelIcon name={toast.icon} scale={2} />
+                      <div>
+                        <div className="toast-head">АЧИВКА ПОЛУЧЕНА</div>
+                        <div>{toast.title}</div>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Status Gauges */}
                   <section className="win hud scene-hud" aria-label="Состояние">
                     <div className="hud-item">
@@ -953,16 +964,6 @@ export default function App() {
           </div>
         )}
 
-        {/* Уведомление о новой ачивке */}
-        {toast && (
-          <div className="win toast" role="status">
-            <PixelIcon name={toast.icon} scale={2} />
-            <div>
-              <div className="toast-head">АЧИВКА ПОЛУЧЕНА</div>
-              <div>{toast.title}</div>
-            </div>
-          </div>
-        )}
 
         {/* Сканлайны, зерно и виньетка — цветокоррекция «CRT-телевизор» */}
         <div className="crt" aria-hidden="true" />
