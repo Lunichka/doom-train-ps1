@@ -1495,3 +1495,161 @@ dd {
   box-sizing: border-box;
   z-index: 7;
 }
+
+/* ==========================================================================
+   Телефон.
+   viewport--short: горизонтально — экран 4:3 во всю ширину, прокрутка вниз.
+   viewport--mobile: вертикально — колонка 568 px, всё друг под другом.
+   ========================================================================== */
+.viewport--short,
+.viewport--mobile {
+  position: static;
+  display: block;
+  min-height: 100vh;
+  overflow: visible;
+}
+
+.viewport--short .ps1 {
+  margin: 0 auto;
+}
+
+.ps1--mobile {
+  width: 568px;
+  height: auto;
+  overflow: visible;
+}
+
+.ps1--mobile .titlebar-name span,
+.ps1--mobile .scene-stamp {
+  display: none;
+}
+
+.ps1--mobile .titlebar-tools {
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.ps1--mobile .ps1-main,
+.ps1--mobile .game,
+.ps1--mobile .game-bottom,
+.ps1--mobile .col,
+.ps1--mobile .commands,
+.ps1--mobile .tabs-win {
+  flex: none;
+  min-height: 0;
+}
+
+.ps1--mobile .game-bottom {
+  display: flex;
+  flex-direction: column;
+}
+
+.ps1--mobile .tab-panel {
+  max-height: 320px;
+}
+
+/* Сцена: 852×300 → ровно ×2 = 568×200 (пиксель арта = 2 px) */
+.ps1--mobile .stage {
+  display: block;
+  height: 200px;
+  margin: 0 -8px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+}
+
+.ps1--mobile .train-scene {
+  transform: scale(0.666667);
+  transform-origin: 0 0;
+  margin-bottom: -100px;
+}
+
+/* Строка события и шкалы — под сценой */
+.mobile-status {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobile-status .scene-msg,
+.mobile-status .scene-hud {
+  position: static;
+  width: auto;
+}
+
+/* Обложка на телефоне: тот же арт ×3, показаны два фрагмента — заголовок и окно с предметами */
+.ps1--mobile .cover {
+  width: 552px;
+  height: auto;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding-top: 24px;
+}
+
+.cover-m-title {
+  width: 408px;
+  height: 72px;
+  background-size: 960px 540px;
+  background-position: -48px -66px;
+  image-rendering: pixelated;
+}
+
+.cover-m-window {
+  position: relative;
+  width: 441px;
+  height: 480px;
+  overflow: hidden;
+}
+
+.cover-m-art {
+  position: absolute;
+  inset: 0;
+  background-size: 960px 540px;
+  background-position: -495px -30px;
+  image-rendering: pixelated;
+  animation: cover-bump 1.6s steps(1, end) infinite;
+}
+
+.cover-m-window .cover-window {
+  left: 75px;
+  top: 60px;
+}
+
+.ps1--mobile .cover-side {
+  position: static;
+  width: auto;
+  align-self: stretch;
+  padding: 0 24px 24px;
+}
+
+.ps1--mobile .cover-sub {
+  font-size: 32px;
+}
+
+.ps1--mobile .route-screen {
+  padding: 16px;
+}
+
+.ps1--mobile .overlay {
+  position: fixed;
+  padding: 12px;
+  align-items: flex-start;
+  overflow-y: auto;
+}
+
+.ps1--mobile .trophy-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.ps1--mobile .toast {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+}
+
+.ps1--mobile .crt {
+  position: fixed;
+}

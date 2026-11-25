@@ -156,6 +156,8 @@ const soundFx = new TrainSoundEngine();
 // Логическое разрешение экрана (4:3), как у телевизора с PS1. Масштабируется целиком.
 const SCREEN_W = 1024;
 const SCREEN_H = 768;
+// Ширина колонки на телефоне: 284 px арта × 2
+const MOBILE_W = 568;
 
 const INITIAL_ITEMS = [
   { id: 'headphones', name: 'Наушники с ANC', icon: 'headphones', count: 1, desc: 'Глушат плач детей и рассуждения про геополитику (-25% ярости).', healRage: -25, healMental: 5 },
@@ -172,7 +174,7 @@ const NEIGHBORS = [
     // Пиксельный спрайт (нарисован вручную): портрет — голова спрайта в 3x
     portrait: { w: 108, left: -19, top: -15 },
     bgAccent: 'from-emerald-950 to-slate-900',
-    description: 'Везёт рассаду и стратегический запас варёных яиц. Уверена, что легкое дуновение из форточки в +35 хуже радиации.',
+    description: 'Везёт рассаду и стратегический запас варёных яиц. Уверена, что сквозняк хуже радиации.',
     phrase: 'Закройте форточку, меня продует!',
     stats: { annoyance: 85, noise: 70, odor: 90 },
     actions: [
@@ -189,18 +191,18 @@ const NEIGHBORS = [
     portrait: { w: 102, left: -27, top: 3 },
     bgAccent: 'from-amber-950 to-slate-900',
     description: 'Гоняет рилсы и Skibidi Toilet на полной громкости. Каждые две минуты проверяет спинку вашего кресла ногами.',
-    phrase: 'МААААМ, купи чипсы, а этот че злой сидит?',
+    phrase: 'МААААМ, купи чипсы, а этот чо злой сидит?',
     stats: { annoyance: 95, noise: 100, odor: 20 },
     actions: [
       { text: 'Попросить родителей усмирить мелкого', mood: 'angry', mentalEffect: -10, rageEffect: +20, log: 'Мама ответила: «Он же ребёнок, вам сложно потерпеть?!»' },
       { text: 'Врубить тяжёлый рок в ответ', mood: 'angry', mentalEffect: -20, rageEffect: +30, log: 'Вагон разделился на два лагеря. Началась звуковая вакханалия.' },
-      { text: 'Угостить чипсами', mood: 'normal', mentalEffect: -5, rageEffect: -15, log: 'Димон затих на 3 минуты, прилепив жвачку под ваш столик.' }
+      { text: 'Сунуть ему жвачку', mood: 'normal', mentalEffect: -5, rageEffect: -15, log: 'Димон затих на 3 минуты, прилепив жвачку под ваш столик.' }
     ]
   },
   {
     id: 'dmb_man',
     name: 'Дядя Толя',
-    title: 'Ветеран дембеля',
+    title: 'Ветеран дембеля-1994',
     sprites: { normal: uncleTolyaNormal, angry: uncleTolyaAngry },
     portrait: { w: 132, left: -36, top: -6 },
     bgAccent: 'from-blue-950 to-slate-900',
@@ -236,11 +238,11 @@ const NEIGHBORS = [
     sprites: { normal: valeraNormal, angry: valeraAngry },
     portrait: { w: 180, left: -58, top: -3 },
     bgAccent: 'from-yellow-950 to-slate-900',
-    description: 'Каждые 15 минут появляется в проходе с криком: «Напиточки, боевички, носки!»',
+    description: 'Каждые 15 минут появляется в проходе с криком: «Сканворды, кроссворды, носки бамбук!»',
     phrase: 'Мужик, бери три пары, на год забудешь про дырки!',
     stats: { annoyance: 60, noise: 80, odor: 30 },
     actions: [
-      { text: 'Купить пару носков из вежливости', mood: 'normal', mentalEffect: +15, rageEffect: -20, log: 'Вы застряли на слове «Африканское животное, 5 букв».' },
+      { text: 'Купить сканворд ради кроссворда про антилопу', mood: 'normal', mentalEffect: +15, rageEffect: -20, log: 'Вы застряли на слове «Африканское животное, 5 букв».' },
       { text: 'Резко ответить: «Ничего не надо!»', mood: 'angry', mentalEffect: -10, rageEffect: +15, log: 'Валера обиделся и пробурчал что-то про зануд.' },
       { text: 'Поджать ноги под себя', mood: 'angry', mentalEffect: -5, rageEffect: +5, log: 'Валера всё равно задел коленку баулом с носками.' }
     ]
@@ -252,7 +254,7 @@ const NEIGHBORS = [
     sprites: { normal: olegNormal, angry: olegAngry },
     portrait: { w: 144, left: -45, top: -3 },
     bgAccent: 'from-orange-950 to-slate-900',
-    description: 'Таскает гитару без чехла. В репертуаре песни у костра, часто мимо нот.',
+    description: 'Таскает гитару без чехла. В репертуаре — песни у костра, часто мимо нот.',
     phrase: 'А давайте «Батарейку» хором, а?',
     stats: { annoyance: 70, noise: 90, odor: 30 },
     actions: [
@@ -462,14 +464,30 @@ export default function App() {
     setCurrentScreen('game');
   };
 
-  // --- Один экран 4:3 (1024×768), масштабируется под окно целиком, без прокрутки ---
+  // --- Экран: на компьютере — один экран 4:3 (1024×768), масштабируется целиком, без прокрутки.
+  // На телефоне вертикально — колонка шириной 568 (сцена ровно ×2), прокрутка страницы.
+  // На телефоне горизонтально — экран 4:3 во всю ширину, прокрутка по вертикали.
   const [zoom, setZoom] = useState(1);
-  const [isPortrait, setIsPortrait] = useState(false);
+  const [layout, setLayout] = useState('desktop');
+  const [minH, setMinH] = useState(SCREEN_H);
   useLayoutEffect(() => {
     const fit = () => {
-      const z = Math.min(window.innerWidth / SCREEN_W, window.innerHeight / SCREEN_H);
-      setZoom(Math.max(0.3, z));
-      setIsPortrait(window.innerWidth < 720 && window.innerHeight > window.innerWidth);
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      if (w < 720 && h > w) {
+        const z = w / MOBILE_W;
+        setLayout('mobile');
+        setZoom(z);
+        setMinH(Math.ceil(h / z));
+      } else if (h < 600) {
+        setLayout('short');
+        setZoom(w / SCREEN_W);
+        setMinH(SCREEN_H);
+      } else {
+        setLayout('desktop');
+        setZoom(Math.max(0.3, Math.min(w / SCREEN_W, h / SCREEN_H)));
+        setMinH(SCREEN_H);
+      }
     };
     fit();
     window.addEventListener('resize', fit);
@@ -555,9 +573,31 @@ export default function App() {
   const hintObj = inventory.find((i) => i.id === hintItem);
   const lastLog = gameLogs[0];
 
+  const hudEl = (
+                  <section className="win hud scene-hud" aria-label="Состояние">
+                    <div className="hud-item">
+                      <div className="hud-head">
+                        <span className="hud-label hud-label--mental">Менталка</span>
+                        <span className={`hud-val ${isMentalLow ? 'is-warn' : ''}`}>{Math.round(mentalHealth)}%</span>
+                      </div>
+                      <Gauge value={mentalHealth} tone="mental" label="Менталка" />
+                    </div>
+                    <div className="hud-item">
+                      <div className="hud-head">
+                        <span className="hud-label hud-label--rage">Уровень Ярости</span>
+                        <span className={`hud-val ${isRaging ? 'is-warn' : ''}`}>{Math.round(rageLevel)}%</span>
+                      </div>
+                      <Gauge value={rageLevel} tone="rage" label="Уровень Ярости" />
+                    </div>
+                  </section>
+  );
+  const msgEl = lastLog ? (
+    <p key={lastLog} className="win scene-msg" aria-live="polite">{lastLog}</p>
+  ) : null;
+
   return (
-    <div className="viewport">
-      <div className="ps1" style={{ zoom }}>
+    <div className={`viewport viewport--${layout}`}>
+      <div className={`ps1 ps1--${layout}`} style={{ zoom, minHeight: layout === 'mobile' ? minH : undefined }}>
         <header className="win titlebar">
           <div className="titlebar-name">
             <PixelIcon name="train" scale={2} />
@@ -590,10 +630,24 @@ export default function App() {
           {currentScreen === 'intro' && (
             <section className="cover" aria-label="Электричка DOOMER-EDITION">
               {/* Лес за стеклом едет, как в самой игре; стёкла на cover.png прозрачные */}
-              <div className="cover-window" aria-hidden="true">
-                <div className="cover-landscape"><img src={coverForest} alt="" /><img src={coverForest} alt="" /></div>
-              </div>
-              <img className="cover-art" src={coverArt} alt="Окно электрички, на столике валерьянка, Дошик, бальзам Звёздочка и наушники" />
+              {layout === 'mobile' ? (
+                <>
+                  <div className="cover-m-title" role="img" aria-label="Электричка" style={{ backgroundImage: `url(${coverArt})` }} />
+                  <div className="cover-m-window" role="img" aria-label="Окно электрички, на столике валерьянка, Дошик, бальзам Звёздочка и наушники">
+                    <div className="cover-window" aria-hidden="true">
+                      <div className="cover-landscape"><img src={coverForest} alt="" /><img src={coverForest} alt="" /></div>
+                    </div>
+                    <div className="cover-m-art" style={{ backgroundImage: `url(${coverArt})` }} />
+                  </div>
+                </>
+              ) : (
+                <>
+                <div className="cover-window" aria-hidden="true">
+                  <div className="cover-landscape"><img src={coverForest} alt="" /><img src={coverForest} alt="" /></div>
+                </div>
+                <img className="cover-art" src={coverArt} alt="Окно электрички, на столике валерьянка, Дошик, бальзам Звёздочка и наушники" />
+                </>
+              )}
               <div className="cover-side">
                 <h1 className="cover-sub">DOOMER-EDITION</h1>
                 <p className="cover-tag">Доедешь ли ты до конечной?</p>
@@ -699,31 +753,20 @@ export default function App() {
                     </div>
                   )}
 
-                  {/* Status Gauges */}
-                  <section className="win hud scene-hud" aria-label="Состояние">
-                    <div className="hud-item">
-                      <div className="hud-head">
-                        <span className="hud-label hud-label--mental">Менталка</span>
-                        <span className={`hud-val ${isMentalLow ? 'is-warn' : ''}`}>{Math.round(mentalHealth)}%</span>
-                      </div>
-                      <Gauge value={mentalHealth} tone="mental" label="Менталка" />
-                    </div>
-                    <div className="hud-item">
-                      <div className="hud-head">
-                        <span className="hud-label hud-label--rage">Уровень Ярости</span>
-                        <span className={`hud-val ${isRaging ? 'is-warn' : ''}`}>{Math.round(rageLevel)}%</span>
-                      </div>
-                      <Gauge value={rageLevel} tone="rage" label="Уровень Ярости" />
-                    </div>
-                  </section>
+                  {layout !== 'mobile' && hudEl}
 
                   {/* Сообщение о последнем событии — как строка диалога в JRPG */}
-                  {lastLog && (
-                    <p key={lastLog} className="win scene-msg" aria-live="polite">{lastLog}</p>
-                  )}
+                  {layout !== 'mobile' && msgEl}
                   <span className="scene-stamp">ЭЛЕКТРИЧКА <span className="scene-stamp-time">{trainTime(distanceKm)}</span></span>
                 </section>
               </div>
+
+              {layout === 'mobile' && (
+                <div className="mobile-status">
+                  {msgEl}
+                  {hudEl}
+                </div>
+              )}
 
               <div className="game-bottom">
                 <div className="col col--left">
@@ -969,11 +1012,6 @@ export default function App() {
         <div className="crt" aria-hidden="true" />
       </div>
 
-      {isPortrait && (
-        <div className="rotate-hint" role="status">
-          <span>Поверните телефон горизонтально — игра рассчитана на экран 4:3</span>
-        </div>
-      )}
     </div>
   );
 }
