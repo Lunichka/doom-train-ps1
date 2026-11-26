@@ -1653,3 +1653,13 @@ dd {
 .ps1--mobile .crt {
   position: fixed;
 }
+
+/* Новый вагон: сиденья ниже, чем в прежнем. Все сидящие опущены на 3 пикселя арта (9 px),
+   чтобы садились на подушку, а не висели над ней. Валера стоит в проходе — его не трогаем. */
+.scene-player.is-pixel { bottom: 0.5px; }
+.scene-neighbor--tiktok_kid.is-pixel { bottom: 21px; }
+.scene-neighbor--crying_baby.is-pixel,
+.scene-neighbor--bard_guitarist.is-pixel,
+.scene-neighbor--tech_bro.is-pixel { bottom: -1.5px; }
+.scene-neighbor--babushka.is-pixel,
+.scene-neighbor--dmb_man.is-pixel { bottom: 1.5px; }
