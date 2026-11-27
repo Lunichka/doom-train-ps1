@@ -1663,3 +1663,6 @@ dd {
 .scene-neighbor--tech_bro.is-pixel { bottom: -7.5px; }
 .scene-neighbor--babushka.is-pixel,
 .scene-neighbor--dmb_man.is-pixel { bottom: 0.5px; }
+
+/* Ответ на выходку соседа дан: варианты гаснут до следующей выходки */
+.menu-item.is-done { opacity: .45; cursor: default; }

@@ -168,6 +168,11 @@ const INITIAL_ITEMS = [
 const NEIGHBORS = [
   {
     id: 'babushka',
+    nudges: [
+      { say: 'Молодой человек, вы мне на рассаду сели!', mental: -6, rage: 10 },
+      { say: 'Яичко будешь? Ещё тёплое, с дома!', mental: -8, rage: 6 },
+      { say: 'Дует! Я же вижу, что дует!', mental: -6, rage: 12 },
+    ],
     name: 'Баба Зина',
     title: 'Хозяйка четырёх сумок и форточки',
     sprites: { normal: babaZinaNormal, angry: babaZinaAngry },
@@ -185,6 +190,11 @@ const NEIGHBORS = [
   },
   {
     id: 'tiktok_kid',
+    nudges: [
+      { say: 'Смотри, смотри, там кот в унитазе!', mental: -8, rage: 10 },
+      { say: 'Это не я пинаю, это нога сама.', mental: -6, rage: 12 },
+      { say: 'МААААМ, а дядя на меня смотрит!', mental: -6, rage: 10 },
+    ],
     name: 'Димон (8 лет)',
     title: 'Любитель рилсов без наушников',
     sprites: { normal: dimonNormal, angry: dimonAngry },
@@ -201,6 +211,11 @@ const NEIGHBORS = [
   },
   {
     id: 'dmb_man',
+    nudges: [
+      { say: 'Вот при Союзе электрички по расписанию ходили, понял?', mental: -8, rage: 8 },
+      { say: 'Чесночку, братишка? Для иммунитета!', mental: -10, rage: 6 },
+      { say: 'Подержи газету, я до кроссворда долистаю.', mental: -6, rage: 8 },
+    ],
     name: 'Дядя Толя',
     title: 'Ветеран дембеля',
     sprites: { normal: uncleTolyaNormal, angry: uncleTolyaAngry },
@@ -217,6 +232,11 @@ const NEIGHBORS = [
   },
   {
     id: 'crying_baby',
+    nudges: [
+      { say: 'УАААААА! (новая октава)', mental: -10, rage: 10 },
+      { say: 'Подержите его секундочку, я в сумке поищу.', mental: -6, rage: 8 },
+      { say: 'Ой, соска вам на кроссовок упала, не достанете?', mental: -6, rage: 10 },
+    ],
     name: 'Малыш Илюша и Мама',
     title: 'Сирена на 120 децибел',
     sprites: { normal: motherAndIlyaNormal, angry: motherAndIlyaAngry },
@@ -233,6 +253,11 @@ const NEIGHBORS = [
   },
   {
     id: 'scanword_vendor',
+    nudges: [
+      { say: 'Сканворды! Свежие, только из типографии!', mental: -6, rage: 8 },
+      { say: 'Носки бамбуковые: три пары — сотка. Тебе надо, мужик!', mental: -8, rage: 8 },
+      { say: 'Боевички! Последний день скидки!', mental: -6, rage: 10 },
+    ],
     name: 'Валера-Бригадир',
     title: 'Король сканвордов и носков',
     sprites: { normal: valeraNormal, angry: valeraAngry },
@@ -249,6 +274,11 @@ const NEIGHBORS = [
   },
   {
     id: 'bard_guitarist',
+    nudges: [
+      { say: 'Я свою написал, послушаешь? Там шесть куплетов.', mental: -8, rage: 10 },
+      { say: 'Ещё раз, с припева!', mental: -6, rage: 10 },
+      { say: 'Подпевай, чего сидишь как неродной?', mental: -6, rage: 12 },
+    ],
     name: 'Олег «Шестая струна»',
     title: 'Мастер трёх блатных аккордов',
     sprites: { normal: olegNormal, angry: olegAngry },
@@ -265,6 +295,11 @@ const NEIGHBORS = [
   },
   {
     id: 'tech_bro',
+    nudges: [
+      { say: 'Коллеги, это блокер! Прям БЛОКЕР!', mental: -6, rage: 12 },
+      { say: 'Можно я от вас хотспот раздам? Какой у вас оператор?', mental: -8, rage: 8 },
+      { say: 'Шерю экран. Видно? А сейчас?', mental: -6, rage: 10 },
+    ],
     name: 'Артём Senior IT',
     title: 'Лид созвонов на раздаче с телефона',
     sprites: { normal: artemNormal, angry: artemAngry },
@@ -280,6 +315,11 @@ const NEIGHBORS = [
     ]
   }
 ];
+
+// Темп поездки: станции приходят сами, сосед сам напоминает о себе
+const STATION_EVERY = 15; // км (1 км = 1 секунда) между станциями: сосед меняется без участия игрока
+const NUDGE_EVERY = 7;    // секунд между «выходками» соседа; если не ответить — штраф
+const SEAT_COST = 10;     // столько менталки стоит самому пересесть
 
 const TRAIN_ROUTES = [
   {
@@ -334,6 +374,8 @@ export default function App() {
   const [mentalHealth, setMentalHealth] = useState(100);
   const [rageLevel, setRageLevel] = useState(15);
   const [distanceKm, setDistanceKm] = useState(0);
+  const distanceRef = useRef(0);
+  distanceRef.current = distanceKm;
   const [gameLogs, setGameLogs] = useState([]);
   const [inventory, setInventory] = useState(INITIAL_ITEMS);
   const [achievements, setAchievements] = useState(ACHIEVEMENTS);
@@ -341,6 +383,15 @@ export default function App() {
   const [usedItemTypes, setUsedItemTypes] = useState(new Set());
   // Настроение текущего соседа: 'normal' | 'angry'. Меняется реакцией на действие игрока (поле mood у действия).
   const [neighborMood, setNeighborMood] = useState('normal');
+
+  // Раунд: сосед что-то делает, у игрока есть NUDGE_EVERY секунд ответить одним действием
+  const [answered, setAnswered] = useState(false);
+  const [line, setLine] = useState(NEIGHBORS[0].phrase);
+  const [stationLeft, setStationLeft] = useState(STATION_EVERY);
+  const answeredRef = useRef(false);
+  const neighborRef = useRef(0);
+  const nudgeRef = useRef({ left: NUDGE_EVERY, idx: 0 });
+  const stationRef = useRef(STATION_EVERY);
 
   const neighbor = NEIGHBORS[neighborIndex];
 
@@ -382,6 +433,43 @@ export default function App() {
     return () => clearInterval(interval);
   }, [currentScreen, selectedRoute, distanceKm]);
 
+  // Темп поездки: станции и выходки соседа идут сами, даже если игрок ничего не жмёт
+  useEffect(() => {
+    if (currentScreen !== 'game') return;
+    const t = setInterval(() => {
+      stationRef.current -= 1;
+      if (stationRef.current <= 0) {
+        stationRef.current = STATION_EVERY;
+        setStationLeft(STATION_EVERY);
+        arriveNeighbor('station');
+        return;
+      }
+      setStationLeft(stationRef.current);
+
+      const n = nudgeRef.current;
+      n.left -= 1;
+      if (n.left > 0) return;
+      const nb = NEIGHBORS[neighborRef.current];
+      const nudge = nb.nudges[n.idx % nb.nudges.length];
+      n.idx += 1;
+      n.left = NUDGE_EVERY;
+      const stamp = trainTime(distanceRef.current);
+      if (!answeredRef.current) {
+        // Промолчал — сосед продолжает, и это бьёт по нервам
+        setMentalHealth((m) => Math.max(0, m + nudge.mental));
+        setRageLevel((r) => Math.min(100, r + nudge.rage));
+        setNeighborMood('angry');
+        setGameLogs((prev) => [`[${stamp}] Вы промолчали. Менталка ${nudge.mental}, ярость +${nudge.rage}`, ...prev.slice(0, 5)]);
+      } else {
+        setNeighborMood('normal');
+      }
+      answeredRef.current = false;
+      setAnswered(false);
+      setLine(nudge.say);
+    }, 1000);
+    return () => clearInterval(t);
+  }, [currentScreen]);
+
   // Check Game Over conditions
   useEffect(() => {
     if (currentScreen === 'game') {
@@ -401,6 +489,9 @@ export default function App() {
   };
 
   const handleAction = (action) => {
+    if (answeredRef.current) return;
+    answeredRef.current = true;
+    setAnswered(true);
     soundFx.playClick();
 
     const newMental = Math.min(100, Math.max(0, mentalHealth + action.mentalEffect));
@@ -440,15 +531,28 @@ export default function App() {
     ]);
   };
 
-  const nextNeighbor = () => {
-    soundFx.playClick();
-    const nextIdx = (neighborIndex + 1) % NEIGHBORS.length;
+  // Новый сосед: на станции (бесплатно) или если игрок пересел сам (стоит менталки)
+  const arriveNeighbor = (reason) => {
+    let nextIdx = neighborRef.current;
+    while (nextIdx === neighborRef.current) nextIdx = Math.floor(Math.random() * NEIGHBORS.length);
+    neighborRef.current = nextIdx;
+    answeredRef.current = false;
+    nudgeRef.current = { left: NUDGE_EVERY, idx: 0 };
     setNeighborIndex(nextIdx);
     setNeighborMood('normal');
-    setGameLogs((prev) => [
-      `Станция! Поезд тронулся. Рядом с вами теперь: ${NEIGHBORS[nextIdx].name}`,
-      ...prev.slice(0, 5)
-    ]);
+    setAnswered(false);
+    setLine(NEIGHBORS[nextIdx].phrase);
+    const who = NEIGHBORS[nextIdx].name;
+    const text = reason === 'seat'
+      ? `Вы пересели, протискиваясь с рюкзаком через весь вагон (менталка −${SEAT_COST}). Рядом: ${who}`
+      : `Станция! Поезд тронулся. Рядом с вами теперь: ${who}`;
+    setGameLogs((prev) => [text, ...prev.slice(0, 5)]);
+  };
+
+  const nextNeighbor = () => {
+    soundFx.playClick();
+    setMentalHealth((m) => Math.max(0, m - SEAT_COST));
+    arriveNeighbor('seat');
   };
 
   const startGame = (route) => {
@@ -461,6 +565,13 @@ export default function App() {
     setInventory(INITIAL_ITEMS.map((item) => ({ ...item })));
     setNeighborIndex(0);
     setNeighborMood('normal');
+    neighborRef.current = 0;
+    answeredRef.current = false;
+    nudgeRef.current = { left: NUDGE_EVERY, idx: 0 };
+    stationRef.current = STATION_EVERY;
+    setAnswered(false);
+    setLine(NEIGHBORS[0].phrase);
+    setStationLeft(STATION_EVERY);
     setCurrentScreen('game');
   };
 
@@ -544,6 +655,7 @@ export default function App() {
     const confirm = (i) => {
       if (currentScreen === 'route_select') return startGame(TRAIN_ROUTES[i]);
       if (i === neighbor.actions.length) return nextNeighbor();
+      if (answered) return;
       return handleAction(neighbor.actions[i]);
     };
 
@@ -786,7 +898,7 @@ export default function App() {
                     </div>
                     <div className="dialog-body">
                       <h2 className="dialog-name">{neighbor.name}<span className="dialog-title">{neighbor.title}</span></h2>
-                      <p className="dialog-text">«{neighbor.phrase}»</p>
+                      <p key={line} className="dialog-text">«{line}»</p>
                     </div>
                   </section>
 
@@ -798,7 +910,8 @@ export default function App() {
                           key={i}
                           type="button"
                           ref={(el) => { menuRefs.current[i] = el; }}
-                          className={`menu-item ${menuIdx === i ? 'is-active' : ''}`}
+                          className={`menu-item ${menuIdx === i ? 'is-active' : ''} ${answered ? 'is-done' : ''}`}
+                          aria-disabled={answered}
                           onMouseEnter={() => setMenuIdx(i)}
                           onFocus={() => setMenuIdx(i)}
                           onClick={() => handleAction(act)}
@@ -826,7 +939,8 @@ export default function App() {
                           >
                             <span className="menu-cursor">{menuIdx === i && <Cursor />}</span>
                             <span className="menu-body">
-                              <span className="menu-text"><span className="menu-key">{i + 1}</span>СМЕНИТЬ МЕСТО / СТАНЦИЯ</span>
+                              <span className="menu-text"><span className="menu-key">{i + 1}</span>ПЕРЕСЕСТЬ (менталка −{SEAT_COST})</span>
+                              <span className="menu-fx"><span>Станция через {stationLeft} км</span>{answered && <span>Ответ дан — ждём, что выкинет сосед</span>}</span>
                             </span>
                           </button>
                         );
